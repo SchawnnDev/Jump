@@ -14,8 +14,9 @@ public class Checkpoints {
 
 	public Checkpoints(Player player) {
 		this.players = player;
+		if(!this.playerCheckPoint.containsKey(player))
+		this.playerCheckPoint.put(player, checkpoints);
 	}
-
 	public int getCheckpoint() {
 		return this.playerCheckPoint.get(players);
 	}
@@ -23,9 +24,10 @@ public class Checkpoints {
 	public int setCheckpoint(int checkpoint) {
 		return this.playerCheckPoint.put(players, checkpoint);
 	}
-	
-	public void addCheckpoint(){
-		if(this.playerCheckPoint.get(players) < Main.getInstance().getConfig().getInt("LastCheckpoint")){
+
+	public void addCheckpoint() {
+		if (this.playerCheckPoint.get(players) >= Main.getInstance().getConfig()
+				.getInt("LastCheckpoint")) {
 			
 		} else {
 			int a = this.playerCheckPoint.get(players) + 1;

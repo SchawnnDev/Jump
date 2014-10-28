@@ -142,6 +142,34 @@ public class Main extends JavaPlugin {
 		}
 		return null;
 	}
+	
+	public Location getStartLoc() {
+			double x = 0, y = 0, z = 0;
+			float pitch = 0, yaw = 0;
+			String world = null;
+			x = getConfig().getDouble("Checkpoint." + "start" + ".x");
+			y = getConfig().getDouble("Checkpoint." + "start" + ".y");
+			z = getConfig().getDouble("Checkpoint." + "start" + ".z");
+			pitch = getConfig().getLong("Checkpoint." + "start" + ".pitch");
+			yaw = getConfig().getLong("Checkpoint." + "start" + ".yaw");
+			world = getConfig().getString("Checkpoint." + "start" + ".world");
+			World w = Bukkit.getWorld(world);
+			return new Location(w, x, y, z, yaw, pitch);
+	}
+	
+	public Location getFinishLoc() {
+		double x = 0, y = 0, z = 0;
+		float pitch = 0, yaw = 0;
+		String world = null;
+		x = getConfig().getDouble("Checkpoint." + "finish" + ".x");
+		y = getConfig().getDouble("Checkpoint." + "finish" + ".y");
+		z = getConfig().getDouble("Checkpoint." + "finish" + ".z");
+		pitch = getConfig().getLong("Checkpoint." + "finish" + ".pitch");
+		yaw = getConfig().getLong("Checkpoint." + "finish" + ".yaw");
+		world = getConfig().getString("Checkpoint." + "finish" + ".world");
+		World w = Bukkit.getWorld(world);
+		return new Location(w, x, y, z, yaw, pitch);
+}
 
 	private void addCheckPointConfig(double x, double y, double z, float pitch,
 			float yaw, String world) {
@@ -178,5 +206,4 @@ public class Main extends JavaPlugin {
 			return true;
 		return false;
 	}
-
 }

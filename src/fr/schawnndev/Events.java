@@ -23,13 +23,23 @@ public class Events implements Listener {
 		Block block = e.getTo().getBlock();
 		if(e.getTo().getBlock().getRelative(BlockFace.DOWN).getType() == Material.GOLD_PLATE){
 			Checkpoints check = new Checkpoints(e.getPlayer());
-/*			if(check.)
-			Vie vie = new Vie(e.getPlayer());
-			vie */
+			if(e.getTo() == Main.getInstance().getStartLoc()){
+				check.addCheckpoint();
+				Vie vie = new Vie(e.getPlayer());
+				vie.addPlayer();
+			} else if (e.getTo() == Main.getInstance().getCheckPointLocById(1)){
+				
+			} else if (e.getTo() == Main.getInstance().getCheckPointLocById(check.getCheckpoint())){
+
+			}	else if (e.getTo() == Main.getInstance().getFinishLoc()){
+				
+			}
+			if(check.getCheckpoint() == 0){
+				check.addCheckpoint();
+
+			}
+		
 		}
 	}
-	
-	
-	
 
 }
