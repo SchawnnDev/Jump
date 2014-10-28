@@ -1,6 +1,5 @@
 Jump
 ====
 
-Jump plugin,
-avec checkpoints.
+Jump plugin, avec checkpoints.
 Genre: epicube
