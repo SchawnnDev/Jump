@@ -10,17 +10,20 @@ public class Vie {
 	int vie = 0;
 	public HashMap<Player, Integer> playerVies = new HashMap<Player, Integer>();
 
-	public Vie(Player player, int vies) {
+	public Vie(Player player) {
 		this.plaayer = player;
-		this.vie = vies;
 	}
 
-	public void add(int nombreVie) {
+	public void addPlayer() {
 		this.playerVies.put(plaayer, this.vie);
 	}
 
-	public void remove(int nombreVie) {
+	public void removePlayer() {
 		this.playerVies.remove(plaayer);
+	}
+	
+	public void addVie(){
+		
 	}
 
 	public int get() {

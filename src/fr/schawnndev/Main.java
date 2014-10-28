@@ -19,11 +19,13 @@ public class Main extends JavaPlugin {
 	// > = plus grand | < = plus petit ;
 
 	public static ArrayList<Player> playerInJump = new ArrayList<Player>();
-	public static HashMap<Player, Vie> playerCheckPoint = new HashMap<Player, Vie>();
+
+	public static Main instance = null;
 	
 	public int Checkpoints = getConfig().getInt("Checkpoints");
 
 	public void onEnable() {
+		instance = this;
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 		getServer().getPluginManager().registerEvents(new Events(this), this);
@@ -118,6 +120,10 @@ public class Main extends JavaPlugin {
 		}
 
 		return false;
+	}
+	
+	public static Main getInstance(){
+		return instance;
 	}
 
 	public Location getCheckPointLocById(int id) {
