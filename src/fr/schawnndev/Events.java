@@ -22,7 +22,6 @@ public class Events implements Listener {
 		Block block = e.getTo().getBlock();
 		if(e.getTo().getBlock().getRelative(BlockFace.DOWN).getType() == Material.GOLD_PLATE){
 			Vie vie = new Vie(e.getPlayer(), 10);
-			Main.playerVies.put(e.getPlayer(), vie);
 		}
 	}
 	
