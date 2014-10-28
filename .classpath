@@ -2,5 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/Desktop/Plugins/BukkitGames/utilitaires/craftbukkit-1.7.2-R0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
