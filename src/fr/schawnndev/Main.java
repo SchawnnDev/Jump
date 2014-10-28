@@ -22,7 +22,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		getConfig().options().copyDefaults(true);
 		saveConfig();
-	//	getServer().getPluginManager().registerEvents(new Events(this), this);
+		getServer().getPluginManager().registerEvents(new Events(this), this);
 	}
 
 	public void onDisable() {
