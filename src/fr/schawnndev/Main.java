@@ -1,6 +1,7 @@
 package fr.schawnndev;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,13 +11,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.schawnndev.utils.Vie;
+
 
 public class Main extends JavaPlugin {
 
 	// > = plus grand | < = plus petit ;
 
 	public static ArrayList<Player> playerInJump = new ArrayList<Player>();
-
+	public static HashMap<Player, Vie> playerCheckPoint = new HashMap<Player, Vie>();
+	
 	public int Checkpoints = getConfig().getInt("Checkpoints");
 
 	public void onEnable() {
