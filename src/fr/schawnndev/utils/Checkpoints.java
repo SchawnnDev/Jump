@@ -40,5 +40,9 @@ public class Checkpoints {
 			return true;
 		return false;
 	}
+	
+	public void removePlayer(){
+		this.playerCheckPoint.remove(players);
+	}
 
 }

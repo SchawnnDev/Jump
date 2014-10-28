@@ -206,4 +206,8 @@ public class Main extends JavaPlugin {
 			return true;
 		return false;
 	}
+	
+	public String starter(String msg) {
+		return "§7[" + "§cJump" + "§7] §6" + msg;
+	}
 }

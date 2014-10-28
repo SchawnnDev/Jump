@@ -22,8 +22,17 @@ public class Vie {
 		this.playerVies.remove(plaayer);
 	}
 	
-	public void addVie(){
-		
+	public void addVie(int vies){
+		int i = this.playerVies.get(plaayer) + vies;
+		this.playerVies.put(plaayer, i);
+	}
+	
+	public void removeOne(){
+		int i=0;
+		if(this.playerVies.get(plaayer) != 0){
+			i = this.playerVies.get(plaayer) - 1;
+			this.playerVies.put(plaayer, i);
+		}
 	}
 
 	public int get() {

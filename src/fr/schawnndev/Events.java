@@ -1,5 +1,6 @@
 package fr.schawnndev;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -13,32 +14,48 @@ import fr.schawnndev.utils.Vie;
 public class Events implements Listener {
 
 	Main pl;
-
+	Vie vie = null;
+	Checkpoints check = null;
 	public Events(Main plugin) {
 		pl = plugin;
 	}
-	
+
 	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent e){
+	public void onPlayerMove(PlayerMoveEvent e) {
 		Block block = e.getTo().getBlock();
-		if(e.getTo().getBlock().getRelative(BlockFace.DOWN).getType() == Material.GOLD_PLATE){
-			Checkpoints check = new Checkpoints(e.getPlayer());
-			if(e.getTo() == Main.getInstance().getStartLoc()){
+		if (e.getTo().getBlock().getRelative(BlockFace.DOWN).getType() == Material.GOLD_PLATE) {
+
+			this.check = new Checkpoints(e.getPlayer());
+			this.vie = new Vie(e.getPlayer());
+			
+			if (e.getTo() == Main.getInstance().getStartLoc()) {
 				check.addCheckpoint();
-				Vie vie = new Vie(e.getPlayer());
 				vie.addPlayer();
-			} else if (e.getTo() == Main.getInstance().getCheckPointLocById(1)){
-				
-			} else if (e.getTo() == Main.getInstance().getCheckPointLocById(check.getCheckpoint())){
-
-			}	else if (e.getTo() == Main.getInstance().getFinishLoc()){
-				
+				Main.playerInJump.add(e.getPlayer());
+				e.getPlayer().sendMessage(Main.getInstance().starter("Bienvenue au jump et bonne chance !"));
 			}
-			if(check.getCheckpoint() == 0){
-				check.addCheckpoint();
-
+			
+			if (Main.playerInJump.contains(e.getPlayer())) {
+				if (e.getTo() == Main.getInstance().getCheckPointLocById(1)) {
+					vie.addVie(5);
+					check.addCheckpoint();
+					e.getPlayer().sendMessage(Main.getInstance().starter("Tu as "));
+				} else if (e.getTo() == Main.getInstance()
+						.getCheckPointLocById(check.getCheckpoint())) {
+					vie.addVie(3);
+					check.addCheckpoint();
+					e.getPlayer().sendMessage(Main.getInstance().starter("Bienvenue au jump et bonne chance !"));
+				} else if (e.getTo() == Main.getInstance().getFinishLoc()) {
+					//Partie messages
+					e.getPlayer().sendMessage(Main.getInstance().starter("Bravo tu as réussi le jump!"));
+					Bukkit.broadcastMessage(Main.getInstance().starter(e.getPlayer().getName() + " a réussi le jump avec §4" + vie.get() + " vies §6!"));
+					
+					//Partie remove
+					Main.playerInJump.remove(e.getPlayer());
+					this.vie.removePlayer();
+					this.check.removePlayer();
+				}
 			}
-		
 		}
 	}
 
