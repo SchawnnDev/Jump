@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.sun.org.apache.xml.internal.serialize.XHTMLSerializer;
+
 public class Main extends JavaPlugin {
 
 	// > = plus grand | < = plus petit ;
@@ -34,91 +36,117 @@ public class Main extends JavaPlugin {
 
 	}
 
-	public void setCheckpoint(Player player) {
+	public void setCheckpoint(Player player, boolean isSet) {
+		Checkpoints = getConfig().getInt("Checkpoints");
 		int x = 0, y = 0, z = 0;
 		float pitch = 0, yaw = 0;
 		String world = null;
-		if (player.getLocation().getX() < 0)
-	    {
-				x = (int) player.getLocation().getX() /*+ (-1)*/;
-	    } else
-	    {
-	    x = (int)  player.getLocation().getX();
-	    }
-		y = (int) (player.getLocation().getY()/* + 1*/);
-		z = (int)  player.getLocation().getZ();
+		if (player.getLocation().getX() < 0) {
+			x = (int) player.getLocation().getX() /* + (-1) */;
+		} else {
+			x = (int) player.getLocation().getX();
+		}
+		y = (int) (player.getLocation().getY()/* + 1 */);
+		z = (int) player.getLocation().getZ();
 		yaw = player.getLocation().getYaw();
 		pitch = player.getLocation().getPitch();
 		world = player.getLocation().getWorld().getName();
 		addCheckPointConfig(x, y, z, pitch, yaw, world, "", false, false, 0);
-		player.sendMessage(starter("§aX: " + x + " Y: " + y + " Z:" + z + " in world: "
-				+ world + " | Id: " + Checkpoints));
-
+		if (!isSet) {
+			player.sendMessage(starter("§aTu as crée le checkpoint "
+					+ Checkpoints + "§6: §aX: " + (int) x + " Y: " + (int) y
+					+ " Z:" + (int) z + " world: " + world));
+		}
 	}
-	
-	public void setCheckpointById(Player player, int id) {
+
+	public void setCheckpointById(Player player, int id, boolean isSet) {
+		Checkpoints = getConfig().getInt("Checkpoints");
 		double x = 0, y = 0, z = 0;
 		float pitch = 0, yaw = 0;
 		String world = null;
-		if (player.getLocation().getX() < 0)
-	    {
-				x =  player.getLocation().getX() /*+ (-1)*/;
-	    } else
-	    {
-	    x =   player.getLocation().getX();
-	    }
-		y =  (player.getLocation().getY()/* + 1*/);
-		z =   player.getLocation().getZ();
+		if (player.getLocation().getX() < 0) {
+			x = player.getLocation().getX() /* + (-1) */;
+		} else {
+			x = player.getLocation().getX();
+		}
+		y = (player.getLocation().getY()/* + 1 */);
+		z = player.getLocation().getZ();
 		yaw = player.getLocation().getYaw();
 		pitch = player.getLocation().getPitch();
 		world = player.getLocation().getWorld().getName();
 		addCheckPointConfig(x, y, z, pitch, yaw, world, "", false, true, id);
-		player.sendMessage(starter("§aX: " + x + " Y: " + y + " Z:" + z + " in world: "
-				+ world + " | Id: " + id));
-
+		if (!isSet) {
+			player.sendMessage(starter("§aTu as crée le checkpoint "
+					+ Checkpoints + "§6: §aX: " + (int) x + " Y: " + (int) y
+					+ " Z:" + (int) z + " world: " + world));
+		} else {
+			player.sendMessage(Main.getInstance().starter(
+					"§aTu as bien set le checkpoint " + id + " à§6:§a X: "
+							+ (int) player.getLocation().getX() + " Y: "
+							+ (int) player.getLocation().getY() + " Z: "
+							+ (int) player.getLocation().getZ()));
+		}
 	}
 
-	public void setStart(Player player) {
+	public void setStart(Player player, boolean isSet) {
+		Checkpoints = getConfig().getInt("Checkpoints");
 		double x = 0, y = 0, z = 0;
 		float pitch = 0, yaw = 0;
 		String world = null;
-		if (player.getLocation().getX() < 0)
-	    {
-				x = player.getLocation().getX() /*+ (-1)*/;
-	    } else
-	    {
-	    x = player.getLocation().getX();
-	    }
-		y =  (player.getLocation().getY()/* + 1*/);
-		z =   player.getLocation().getZ();
+		if (player.getLocation().getX() < 0) {
+			x = player.getLocation().getX() /* + (-1) */;
+		} else {
+			x = player.getLocation().getX();
+		}
+		y = (player.getLocation().getY()/* + 1 */);
+		z = player.getLocation().getZ();
 		yaw = player.getLocation().getYaw();
 		pitch = player.getLocation().getPitch();
 		world = player.getLocation().getWorld().getName();
 		addCheckPointConfig(x, y, z, pitch, yaw, world, "start", true, false, 0);
-		player.sendMessage(starter("§aX: " + x + " Y: " + y + " Z:" + z + " in world: "
-				+ world));
+		if (!isSet) {
+			player.sendMessage(starter("§aTu as crée le start§6: §aX: "
+					+ (int) x + " Y: " + (int) y + " Z:" + (int) z + " world: "
+					+ world));
+		} else {
+			player.sendMessage(Main.getInstance().starter(
+					"§aTu as bien set le start à§6:§a X: "
+							+ (int) player.getLocation().getX() + " Y: "
+							+ (int) player.getLocation().getY() + " Z: "
+							+ (int) player.getLocation().getZ()));
+		}
 	}
 
-	public void setFinish(Player player) {
+	public void setFinish(Player player, boolean isSet) {
+		Checkpoints = getConfig().getInt("Checkpoints");
 		double x = 0, y = 0, z = 0;
 		float pitch = 0, yaw = 0;
 		String world = null;
-		if (player.getLocation().getX() < 0)
-	    {
-		x = player.getLocation().getX() /*+ (-1)*/;
-	    } else
-	    {
-	    x =  player.getLocation().getX();
-	    }
-		y =  (player.getLocation().getY()/* + 1*/);
-		z =  player.getLocation().getZ();
+		if (player.getLocation().getX() < 0) {
+			x = player.getLocation().getX() /* + (-1) */;
+		} else {
+			x = player.getLocation().getX();
+		}
+		y = (player.getLocation().getY()/* + 1 */);
+		z = player.getLocation().getZ();
 		yaw = player.getLocation().getYaw();
 		pitch = player.getLocation().getPitch();
 		world = player.getLocation().getWorld().getName();
-		addCheckPointConfig(x, y, z, pitch, yaw, world, "finish", true, false, 0);
-		player.sendMessage(starter("§aX: " + x + " Y: " + y + " Z:" + z + " in world: "
-				+ world));
-
+		addCheckPointConfig(x, y, z, pitch, yaw, world, "finish", true, false,
+				0);
+		player.sendMessage(starter("§aX: " + x + " Y: " + y + " Z:" + z
+				+ " in world: " + world));
+		if (!isSet) {
+			player.sendMessage(starter("§aTu as crée le finish§6: §aX: "
+					+ (int) x + " Y: " + (int) y + " Z:" + (int) z + " world: "
+					+ world));
+		} else {
+			player.sendMessage(Main.getInstance().starter(
+					"§aTu as bien set le start à§6:§a X: "
+							+ (int) player.getLocation().getX() + " Y: "
+							+ (int) player.getLocation().getY() + " Z: "
+							+ (int) player.getLocation().getZ()));
+		}
 	}
 
 	public void sendHelp(Player player) {
@@ -135,23 +163,23 @@ public class Main extends JavaPlugin {
 			String[] args) {
 
 		Player player = (Player) sender;
-		if(player.isOp()){
-		if (label.equalsIgnoreCase("jump")) {
+		if (player.isOp()) {
+			if (label.equalsIgnoreCase("jump")) {
 
-			if (sender instanceof Player) {
-				
-				if(args.length == 0){
-					if (!player.isOp()) {
-						player.sendMessage(starter("§cTu n'es pas op!"));
-					} else {
-						sendHelp(player);
+				if (sender instanceof Player) {
+
+					if (args.length == 0) {
+						if (!player.isOp()) {
+							player.sendMessage(starter("§cTu n'es pas op!"));
+						} else {
+							sendHelp(player);
+						}
+						return true;
 					}
-					return true;
-				}
 
-		//		if (args.length == 1) {
+					// if (args.length == 1) {
 					if (args[0].equalsIgnoreCase("create")) {
-						
+
 						if (args.length == 1) {
 							if (!player.isOp()) {
 								player.sendMessage(starter("§cTu n'es pas op!"));
@@ -160,7 +188,7 @@ public class Main extends JavaPlugin {
 							}
 							return true;
 						}
-						
+
 						if (args.length > 3) {
 							if (!player.isOp()) {
 								player.sendMessage(starter("§cTu n'es pas op!"));
@@ -169,48 +197,49 @@ public class Main extends JavaPlugin {
 							}
 							return true;
 						}
-							if (args[1].equalsIgnoreCase("checkpoint")) {
-								if(args.length == 2){
-								setCheckpoint(player);
-								ItemStack stack = new ItemStack(Material.STONE_PLATE);
+						if (args[1].equalsIgnoreCase("checkpoint")) {
+							if (args.length == 2) {
+								setCheckpoint(player, false);
+								ItemStack stack = new ItemStack(
+										Material.STONE_PLATE);
 								ItemMeta metaStack = stack.getItemMeta();
 								metaStack.setDisplayName("Jump_Checkpoint");
 								stack.setItemMeta(metaStack);
 								player.getInventory().addItem(stack);
+							} else {
+								if (!player.isOp()) {
+									player.sendMessage(starter("§cTu n'es pas op!"));
 								} else {
-									if (!player.isOp()) {
-										player.sendMessage(starter("§cTu n'es pas op!"));
-									} else {
-										player.sendMessage(starter("§cIl y a trop d'args!"));
-									}
+									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
-								return true;
 							}
-							
-							
+							return true;
+						}
 
-							if (args[1].equalsIgnoreCase("start")) {
-								if(args.length == 2){
-								setStart(player);
-								ItemStack stack = new ItemStack(Material.STONE_PLATE);
+						if (args[1].equalsIgnoreCase("start")) {
+							if (args.length == 2) {
+								setStart(player, false);
+								ItemStack stack = new ItemStack(
+										Material.STONE_PLATE);
 								ItemMeta metaStack = stack.getItemMeta();
 								metaStack.setDisplayName("Jump_Start");
 								stack.setItemMeta(metaStack);
 								player.getInventory().addItem(stack);
+							} else {
+								if (!player.isOp()) {
+									player.sendMessage(starter("§cTu n'es pas op!"));
 								} else {
-									if (!player.isOp()) {
-										player.sendMessage(starter("§cTu n'es pas op!"));
-									} else {
-										player.sendMessage(starter("§cIl y a trop d'args!"));
-									}
+									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
-								return true;
 							}
+							return true;
+						}
 
-							if (args[1].equalsIgnoreCase("finish")) {
-								if(args.length == 2){
-								setFinish(player);
-								ItemStack stack = new ItemStack(Material.STONE_PLATE);
+						if (args[1].equalsIgnoreCase("finish")) {
+							if (args.length == 2) {
+								setFinish(player, false);
+								ItemStack stack = new ItemStack(
+										Material.STONE_PLATE);
 								ItemMeta metaStack = stack.getItemMeta();
 								metaStack.setDisplayName("Jump_Finish");
 								player.getInventory().addItem(stack);
@@ -222,18 +251,17 @@ public class Main extends JavaPlugin {
 									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
 							}
-								return true;
+							return true;
+						}
+
+						if (args.length == 2) {
+							if (!player.isOp()) {
+								player.sendMessage(starter("§cTu n'es pas op!"));
+							} else {
+								sendHelp(player);
 							}
-							
-							if (args.length == 2) {
-								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
-								} else {
-									sendHelp(player);
-								}
-								return true;
-							}
-							
+							return true;
+						}
 
 						return true;
 					}
@@ -246,7 +274,7 @@ public class Main extends JavaPlugin {
 							}
 							return true;
 						}
-						
+
 						if (args.length > 3) {
 							if (!player.isOp()) {
 								player.sendMessage(starter("§cTu n'es pas op!"));
@@ -255,48 +283,49 @@ public class Main extends JavaPlugin {
 							}
 							return true;
 						}
-							if (args[1].equalsIgnoreCase("checkpoint")) {
-								if(args.length == 2){
-								setCheckpoint(player);
-								ItemStack stack = new ItemStack(Material.STONE_PLATE);
+						if (args[1].equalsIgnoreCase("checkpoint")) {
+							if (args.length == 2) {
+								setCheckpoint(player, false);
+								ItemStack stack = new ItemStack(
+										Material.STONE_PLATE);
 								ItemMeta metaStack = stack.getItemMeta();
 								metaStack.setDisplayName("Jump_Checkpoint");
 								stack.setItemMeta(metaStack);
 								player.getInventory().addItem(stack);
+							} else {
+								if (!player.isOp()) {
+									player.sendMessage(starter("§cTu n'es pas op!"));
 								} else {
-									if (!player.isOp()) {
-										player.sendMessage(starter("§cTu n'es pas op!"));
-									} else {
-										player.sendMessage(starter("§cIl y a trop d'args!"));
-									}
+									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
-								return true;
 							}
-							
-							
+							return true;
+						}
 
-							if (args[1].equalsIgnoreCase("start")) {
-								if(args.length == 2){
-								setStart(player);
-								ItemStack stack = new ItemStack(Material.STONE_PLATE);
+						if (args[1].equalsIgnoreCase("start")) {
+							if (args.length == 2) {
+								setStart(player, false);
+								ItemStack stack = new ItemStack(
+										Material.STONE_PLATE);
 								ItemMeta metaStack = stack.getItemMeta();
 								metaStack.setDisplayName("Jump_Start");
 								stack.setItemMeta(metaStack);
 								player.getInventory().addItem(stack);
+							} else {
+								if (!player.isOp()) {
+									player.sendMessage(starter("§cTu n'es pas op!"));
 								} else {
-									if (!player.isOp()) {
-										player.sendMessage(starter("§cTu n'es pas op!"));
-									} else {
-										player.sendMessage(starter("§cIl y a trop d'args!"));
-									}
+									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
-								return true;
 							}
+							return true;
+						}
 
-							if (args[1].equalsIgnoreCase("finish")) {
-								if(args.length == 2){
-								setFinish(player);
-								ItemStack stack = new ItemStack(Material.STONE_PLATE);
+						if (args[1].equalsIgnoreCase("finish")) {
+							if (args.length == 2) {
+								setFinish(player, false);
+								ItemStack stack = new ItemStack(
+										Material.STONE_PLATE);
 								ItemMeta metaStack = stack.getItemMeta();
 								metaStack.setDisplayName("Jump_Finish");
 								player.getInventory().addItem(stack);
@@ -308,27 +337,37 @@ public class Main extends JavaPlugin {
 									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
 							}
-								return true;
+							return true;
+						}
+
+						if (args.length == 2) {
+							if (!player.isOp()) {
+								player.sendMessage(starter("§cTu n'es pas op!"));
+							} else {
+								sendHelp(player);
 							}
-							
-							if (args.length == 2) {
-								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
-								} else {
-									sendHelp(player);
-								}
-								return true;
-							}
-							
+							return true;
+						}
 
 						return true;
 					}
 					if (args[0].equalsIgnoreCase("list")) {
-						for(int i = 0; i < this.Checkpoints; i++){
-							player.sendMessage(starter("§c" + i + "§6: §5X: "
-									+ getCheckPointLocById(i, player).getX()
-									+ " Y: " + getCheckPointLocById(i, player)
-									+ " Z: " + getCheckPointLocById(i, player)));
+						if (args.length == 1) {
+							for (int i = 1; i <= this.Checkpoints; i++) {
+								player.sendMessage(starter("§cCheckpoint "
+										+ i
+										+ "§6: §5X: "
+										+ (int) getCheckPointLocById(i, player,
+												true).getX()
+										+ " Y: "
+										+ (int) getCheckPointLocById(i, player,
+												true).getBlockY()
+										+ " Z: "
+										+ (int) getCheckPointLocById(i, player,
+												true).getBlockZ()));
+							}
+						} else {
+							player.sendMessage(starter("§cTrop d'arguments!"));
 						}
 						return true;
 					}
@@ -355,8 +394,8 @@ public class Main extends JavaPlugin {
 									return true;
 								}
 
-								if(getConfig().contains("Checkpoint." + u)){
-									setCheckpointById(player, u);
+								if (getConfig().contains("Checkpoint." + u)) {
+									setCheckpointById(player, u, true);
 								} else {
 									player.sendMessage(starter("§cL'id n'est pas enregistrée!"));
 								}
@@ -369,34 +408,41 @@ public class Main extends JavaPlugin {
 							}
 							return true;
 
-						}
-						else	if (args[1].equalsIgnoreCase("start")) {
-							if(args.length == 2){
-								if(getConfig().contains("Checkpoint.start")){
-								setStart(player);
-								player.sendMessage(Main.getInstance().starter("§aTu as bien set le start à: X: " + (int) player.getLocation().getX()
-								+ " Y: " + (int) player.getLocation().getY() + " Z: " + (int) player.getLocation().getZ()));
-							} else {
-								player.sendMessage(starter("§cTu dois créer le start avant de pouvoir set!"));
-								player.sendMessage(starter("§c/jump create start"));
-							}
+						} else if (args[1].equalsIgnoreCase("start")) {
+							if (args.length == 2) {
+								if (getConfig().contains("Checkpoint.start")) {
+									setStart(player, true);
 								} else {
-									if (!player.isOp()) {
-										player.sendMessage(starter("§cTu n'es pas op!"));
-									} else {
-										player.sendMessage(starter("§cTrop d'arguments!"));
-									}
+									player.sendMessage(starter("§cTu dois créer le start avant de pouvoir set!"));
+									player.sendMessage(starter("§c/jump create start"));
 								}
-								return true;
-						}
-						else if (args[1].equalsIgnoreCase("finish")) {
+							} else {
+								if (!player.isOp()) {
+									player.sendMessage(starter("§cTu n'es pas op!"));
+								} else {
+									player.sendMessage(starter("§cTrop d'arguments!"));
+								}
+							}
+							return true;
+						} else if (args[1].equalsIgnoreCase("finish")) {
 							if (args.length == 2) {
 								if (getConfig().contains("Checkpoint.finish")) {
-									setFinish(player);
-									player.sendMessage(Main.getInstance().starter(
-													"§aTu as bien set le finish à: X: " + (int) player.getLocation().getX()
-															+ " Y: "+ (int) player.getLocation().getY()
-															+ " Z: "+ (int) player.getLocation().getZ()));
+									setFinish(player, true);
+									player.sendMessage(Main
+											.getInstance()
+											.starter(
+													"§aTu as bien set le finish à: X: "
+															+ (int) player
+																	.getLocation()
+																	.getX()
+															+ " Y: "
+															+ (int) player
+																	.getLocation()
+																	.getY()
+															+ " Z: "
+															+ (int) player
+																	.getLocation()
+																	.getZ()));
 								} else {
 									player.sendMessage(starter("§cTu dois créer le finish avant de pouvoir set!"));
 									player.sendMessage(starter("§c/jump create finish"));
@@ -417,22 +463,22 @@ public class Main extends JavaPlugin {
 					if (args[0].equalsIgnoreCase("tp")) {
 						if (args.length == 2) {
 							int u = 0;
-							if(args[1].equalsIgnoreCase("start")){
-								if(getConfig().contains("Checkpoint.start")){
-								player.teleport(getStartLoc());
-								player.sendMessage(starter("§aTu viens d'être téléporté au start!"));
+							if (args[1].equalsIgnoreCase("start")) {
+								if (getConfig().contains("Checkpoint.start")) {
+									player.teleport(getStartLoc());
+									player.sendMessage(starter("§aTu viens d'être téléporté au start!"));
 								} else {
 									player.sendMessage(starter("§cTu n'as pas set le start !"));
 								}
 								return true;
 							}
-							if(args[1].equalsIgnoreCase("finish")){
-								if(getConfig().contains("Checkpoint.finish")){
-								player.teleport(getFinishLoc());
-								player.sendMessage(starter("§aTu viens d'être téléporté au finish!"));
-							} else {
-								player.sendMessage(starter("§cTu n'as pas set le finish !"));
-							}
+							if (args[1].equalsIgnoreCase("finish")) {
+								if (getConfig().contains("Checkpoint.finish")) {
+									player.teleport(getFinishLoc());
+									player.sendMessage(starter("§aTu viens d'être téléporté au finish!"));
+								} else {
+									player.sendMessage(starter("§cTu n'as pas set le finish !"));
+								}
 								return true;
 							}
 							try {
@@ -442,8 +488,9 @@ public class Main extends JavaPlugin {
 								player.sendMessage(starter("§cCe n'est pas une id!"));
 								return true;
 							}
-							if(getConfig().contains("Checkpoint."+u)){
-							player.teleport(getCheckPointLocById(u, player));
+							if (getConfig().contains("Checkpoint." + u)) {
+								player.teleport(getCheckPointLocById(u, player,
+										false));
 							} else {
 								player.sendMessage(starter("§cL'id n'est pas enregistrée!"));
 							}
@@ -462,15 +509,15 @@ public class Main extends JavaPlugin {
 
 					// FIN cmd:jump
 					return true;
-			//	} else {
-			//		if (!player.isOp()) {
-			//			player.sendMessage("§cTu n'es pas op!");
-			//		} else {
-			//			sendHelp(player);
-			//		}
-			//	}
-			}
-			return true;
+					// } else {
+					// if (!player.isOp()) {
+					// player.sendMessage("§cTu n'es pas op!");
+					// } else {
+					// sendHelp(player);
+					// }
+					// }
+				}
+				return true;
 			}
 		} else {
 			player.sendMessage(starter("§cTu n'es pas op!"));
@@ -482,7 +529,8 @@ public class Main extends JavaPlugin {
 		return instance;
 	}
 
-	public Location getCheckPointLocById(int id, Player player) {
+	public Location getCheckPointLocById(int id, Player player, boolean isList) {
+		Checkpoints = getConfig().getInt("Checkpoints");
 		if (!(id > Checkpoints) && (id >= 1)) {
 			double x = 0, y = 0, z = 0;
 			float pitch = 0, yaw = 0;
@@ -494,10 +542,13 @@ public class Main extends JavaPlugin {
 			yaw = getConfig().getLong("Checkpoint." + id + ".yaw");
 			world = getConfig().getString("Checkpoint." + id + ".world");
 			World w = Bukkit.getWorld(world);
-			player.sendMessage(starter("§aTu viens d'être téléporté au checkpoint <" + id + "> !"));
+			if (!isList) {
+				player.sendMessage(starter("§aTu viens d'être téléporté au checkpoint <"
+						+ id + "> !"));
+			}
 			return new Location(w, x, y, z, yaw, pitch);
 		}
-		return player.getLocation();	
+		return player.getLocation();
 	}
 
 	public Location getStartLoc() {
@@ -529,27 +580,28 @@ public class Main extends JavaPlugin {
 	}
 
 	private void addCheckPointConfig(double x, double y, double z, float pitch,
-			float yaw, String world, String name, boolean isName, boolean isId, int id) {
+			float yaw, String world, String name, boolean isName, boolean isId,
+			int id) {
 		reloadConfig();
-			
-			//SI isId ALORS SET CHECKPOINT + ID + X;
+		Checkpoints = getConfig().getInt("Checkpoints");
+		// SI isId ALORS SET CHECKPOINT + ID + X;
 		if (!isName) {
-			if(!isId){
-			int i = getNextAndSetInt();
-			getConfig().set("Checkpoint." + i + ".x", x);
-			getConfig().set("Checkpoint." + i + ".y", y);
-			getConfig().set("Checkpoint." + i + ".z", z);
-			getConfig().set("Checkpoint." + i + ".pitch", pitch);
-			getConfig().set("Checkpoint." + i + ".yaw", yaw);
-			getConfig().set("Checkpoint." + i + ".world", world);
+			if (!isId) {
+				int i = getNextAndSetInt();
+				getConfig().set("Checkpoint." + i + ".x", x);
+				getConfig().set("Checkpoint." + i + ".y", y);
+				getConfig().set("Checkpoint." + i + ".z", z);
+				getConfig().set("Checkpoint." + i + ".pitch", pitch);
+				getConfig().set("Checkpoint." + i + ".yaw", yaw);
+				getConfig().set("Checkpoint." + i + ".world", world);
 			} else {
-				if(getConfig().contains("Checkpoint." + id)){
-				getConfig().set("Checkpoint." + id + ".x", x);
-				getConfig().set("Checkpoint." + id + ".y", y);
-				getConfig().set("Checkpoint." + id + ".z", z);
-				getConfig().set("Checkpoint." + id + ".pitch", pitch);
-				getConfig().set("Checkpoint." + id + ".yaw", yaw);
-				getConfig().set("Checkpoint." + id + ".world", world);
+				if (getConfig().contains("Checkpoint." + id)) {
+					getConfig().set("Checkpoint." + id + ".x", x);
+					getConfig().set("Checkpoint." + id + ".y", y);
+					getConfig().set("Checkpoint." + id + ".z", z);
+					getConfig().set("Checkpoint." + id + ".pitch", pitch);
+					getConfig().set("Checkpoint." + id + ".yaw", yaw);
+					getConfig().set("Checkpoint." + id + ".world", world);
 				}
 			}
 		} else {
@@ -564,6 +616,7 @@ public class Main extends JavaPlugin {
 	}
 
 	private int getNextAndSetInt() {
+		Checkpoints = getConfig().getInt("Checkpoints");
 		int i = 0;
 		i = Checkpoints + 1;
 		getConfig().set("Checkpoints", i);
@@ -573,6 +626,7 @@ public class Main extends JavaPlugin {
 
 	@SuppressWarnings("unused")
 	private void removeCheckpoint(int id) {
+		Checkpoints = getConfig().getInt("Checkpoints");
 		int i = 0;
 		i = Checkpoints;
 		i--;
@@ -583,6 +637,7 @@ public class Main extends JavaPlugin {
 
 	@SuppressWarnings("unused")
 	private boolean checkpointExists(int id) {
+		Checkpoints = getConfig().getInt("Checkpoints");
 		if (getConfig().contains("Checkpoint." + id))
 			return true;
 		return false;
