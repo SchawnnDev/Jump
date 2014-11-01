@@ -266,107 +266,48 @@ public class Main extends JavaPlugin {
 						return true;
 					}
 					if (args[0].equalsIgnoreCase("remove")) {
-						if (args.length == 1) {
-							if (!player.isOp()) {
-								player.sendMessage(starter("§cTu n'es pas op!"));
-							} else {
-								sendHelp(player);
-							}
-							return true;
-						}
-
-						if (args.length > 3) {
-							if (!player.isOp()) {
-								player.sendMessage(starter("§cTu n'es pas op!"));
-							} else {
-								sendHelp(player);
-							}
-							return true;
-						}
-						if (args[1].equalsIgnoreCase("checkpoint")) {
-							if (args.length == 2) {
-								setCheckpoint(player, false);
-								ItemStack stack = new ItemStack(
-										Material.STONE_PLATE);
-								ItemMeta metaStack = stack.getItemMeta();
-								metaStack.setDisplayName("Jump_Checkpoint");
-								stack.setItemMeta(metaStack);
-								player.getInventory().addItem(stack);
-							} else {
-								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
-								} else {
-									player.sendMessage(starter("§cIl y a trop d'args!"));
-								}
-							}
-							return true;
-						}
-
-						if (args[1].equalsIgnoreCase("start")) {
-							if (args.length == 2) {
-								setStart(player, false);
-								ItemStack stack = new ItemStack(
-										Material.STONE_PLATE);
-								ItemMeta metaStack = stack.getItemMeta();
-								metaStack.setDisplayName("Jump_Start");
-								stack.setItemMeta(metaStack);
-								player.getInventory().addItem(stack);
-							} else {
-								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
-								} else {
-									player.sendMessage(starter("§cIl y a trop d'args!"));
-								}
-							}
-							return true;
-						}
-
-						if (args[1].equalsIgnoreCase("finish")) {
-							if (args.length == 2) {
-								setFinish(player, false);
-								ItemStack stack = new ItemStack(
-										Material.STONE_PLATE);
-								ItemMeta metaStack = stack.getItemMeta();
-								metaStack.setDisplayName("Jump_Finish");
-								player.getInventory().addItem(stack);
-								stack.setItemMeta(metaStack);
-							} else {
-								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
-								} else {
-									player.sendMessage(starter("§cIl y a trop d'args!"));
-								}
-							}
-							return true;
-						}
-
 						if (args.length == 2) {
-							if (!player.isOp()) {
-								player.sendMessage(starter("§cTu n'es pas op!"));
+							int u = 0;
+							if (args[1].equalsIgnoreCase("start")) {
+								if (getConfig().contains("Checkpoint.start")) {
+									getConfig().set("Checkpoint.start", null);
+									saveConfig();
+									player.sendMessage(starter("§aTu viens de remove le start!"));
+								} else {
+									player.sendMessage(starter("§cLe start est déjà remove !"));
+								}
+								return true;
+							}
+							if (args[1].equalsIgnoreCase("finish")) {
+								if (getConfig().contains("Checkpoint.finish")) {
+									getConfig().set("Checkpoint.finish", null);
+									saveConfig();
+									player.sendMessage(starter("§aTu viens de remove le finish !"));
+								} else {
+									player.sendMessage(starter("§cLe finish est déjà remove !"));
+								}
+								return true;
+							}
+							try {
+								String s = args[1];
+								u = Integer.parseInt(s);
+							} catch (NumberFormatException e) {
+								player.sendMessage(starter("§cCe n'est pas une id!"));
+								return true;
+							}
+							if (getConfig().contains("Checkpoint." + u)) {
+								removeCheckpoint(u);
 							} else {
-								sendHelp(player);
+								player.sendMessage(starter("§cLe checkpoint " + u + " est déjà remove !"));
 							}
-							return true;
 						}
-
-						return true;
-					}
-					if (args[0].equalsIgnoreCase("list")) {
 						if (args.length == 1) {
-							for (int i = 1; i <= this.Checkpoints; i++) {
-								player.sendMessage(starter("§cCheckpoint "
-										+ i
-										+ "§6: §5X: "
-										+ (int) getCheckPointLocById(i, player,
-												true).getX()
-										+ " Y: "
-										+ (int) getCheckPointLocById(i, player,
-												true).getBlockY()
-										+ " Z: "
-										+ (int) getCheckPointLocById(i, player,
-												true).getBlockZ()));
-							}
-						} else {
+							player.sendMessage(starter("§cIl manque des args:"));
+							player.sendMessage(starter("§c/jump remove <id>"));
+							player.sendMessage(starter("§c/jump remove start"));
+							player.sendMessage(starter("§c/jump remove finish"));
+						}
+						if (args.length > 2) {
 							player.sendMessage(starter("§cTrop d'arguments!"));
 						}
 						return true;
@@ -499,7 +440,7 @@ public class Main extends JavaPlugin {
 							player.sendMessage(starter("§cIl manque des args:"));
 							player.sendMessage(starter("§c/jump tp <id>"));
 							player.sendMessage(starter("§c/jump tp start"));
-							player.sendMessage(starter("§c/jump tp <finish>"));
+							player.sendMessage(starter("§c/jump tp finish"));
 						}
 						if (args.length > 2) {
 							player.sendMessage(starter("§cTrop d'arguments!"));
@@ -623,15 +564,42 @@ public class Main extends JavaPlugin {
 		saveConfig();
 		return i;
 	}
+	
+	private void reloadCheckConfig(){
+		Checkpoints = getConfig().getInt("Checkpoints");
+	}
 
 	@SuppressWarnings("unused")
 	private void removeCheckpoint(int id) {
-		Checkpoints = getConfig().getInt("Checkpoints");
+		int lastNumber = 0;
+		// Remove lignes id
+		getConfig().set("Checkpoint." + id, null);
+		// Set
+		reloadCheckConfig();
+		for(int r = 1; r < Checkpoints; r++){
+			if(!getConfig().contains("Checkpoint." + r)){
+				lastNumber = r;
+			}
+		}
+		
+		reloadCheckConfig();
+		for(int a = 1; a < Checkpoints; a++){
+			if(a > lastNumber){
+				int g = 0;
+				g = id -	1;
+				getConfig().set("Checkpoint." + id, g);
+				saveConfig();
+				reloadConfig();
+			}
+		}
+		
+		
+		
+		// Checkpoint
+		reloadCheckConfig();
 		int i = 0;
-		i = Checkpoints;
-		i--;
+		i = Checkpoints - 1;
 		getConfig().set("Checkpoints", i);
-
 		saveConfig();
 	}
 
