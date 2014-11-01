@@ -1,6 +1,7 @@
 package fr.schawnndev;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,13 +14,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.sun.org.apache.xml.internal.serialize.XHTMLSerializer;
-
 public class Main extends JavaPlugin {
 
 	// > = plus grand | < = plus petit ;
 
 	public static ArrayList<Player> playerInJump = new ArrayList<Player>();
+	public static HashMap<Player, Integer> playerCheckPoint = new HashMap<Player, Integer>();
 
 	public static Main instance = null;
 
@@ -86,6 +86,15 @@ public class Main extends JavaPlugin {
 							+ (int) player.getLocation().getY() + " Z: "
 							+ (int) player.getLocation().getZ()));
 		}
+	}
+	
+	public int getCheckpoint(){
+		reloadCheckConfig();
+		reloadConfig();
+		if(getConfig().getInt("Checkpoints") != 0){
+			return getConfig().getInt("Checkpoints");
+		}
+		return 1;
 	}
 
 	public void setStart(Player player, boolean isSet) {
@@ -176,6 +185,8 @@ public class Main extends JavaPlugin {
 						}
 						return true;
 					}
+					
+					//CREATE
 
 					// if (args.length == 1) {
 					if (args[0].equalsIgnoreCase("create")) {
@@ -265,53 +276,36 @@ public class Main extends JavaPlugin {
 
 						return true;
 					}
-					if (args[0].equalsIgnoreCase("remove")) {
-						if (args.length == 2) {
-							int u = 0;
-							if (args[1].equalsIgnoreCase("start")) {
-								if (getConfig().contains("Checkpoint.start")) {
-									getConfig().set("Checkpoint.start", null);
-									saveConfig();
-									player.sendMessage(starter("§aTu viens de remove le start!"));
-								} else {
-									player.sendMessage(starter("§cLe start est déjà remove !"));
-								}
-								return true;
+					
+					//LIST
+					
+					if(args[0].equalsIgnoreCase("list")){
+						reloadCheckConfig();
+					/*	for(Player p : Bukkit.getOnlinePlayers()){
+							if(p.isOp()){
+								p.sendMessage(starter(player.getName() + ": /jump list : on"));
 							}
-							if (args[1].equalsIgnoreCase("finish")) {
-								if (getConfig().contains("Checkpoint.finish")) {
-									getConfig().set("Checkpoint.finish", null);
-									saveConfig();
-									player.sendMessage(starter("§aTu viens de remove le finish !"));
-								} else {
-									player.sendMessage(starter("§cLe finish est déjà remove !"));
-								}
-								return true;
-							}
-							try {
-								String s = args[1];
-								u = Integer.parseInt(s);
-							} catch (NumberFormatException e) {
-								player.sendMessage(starter("§cCe n'est pas une id!"));
-								return true;
-							}
-							if (getConfig().contains("Checkpoint." + u)) {
-								removeCheckpoint(u);
-							} else {
-								player.sendMessage(starter("§cLe checkpoint " + u + " est déjà remove !"));
-							}
+						} */
+						if(getConfig().getInt("Checkpoints") != 0){
+						for(int i = 1; i <= Checkpoints; i++){
+							player.sendMessage(starter("Checkpoint " + i + "§6: §5X: §6"
+									+ (int) this.getCheckPointLocById(i,player, true).getX()+ " §5Y: §6"
+									+ (int) this.getCheckPointLocById(i,player, true).getY()+ " §5Z: §6"
+									+ (int) this.getCheckPointLocById(i,player, true).getZ()));
 						}
-						if (args.length == 1) {
-							player.sendMessage(starter("§cIl manque des args:"));
-							player.sendMessage(starter("§c/jump remove <id>"));
-							player.sendMessage(starter("§c/jump remove start"));
-							player.sendMessage(starter("§c/jump remove finish"));
+						} else {
+							player.sendMessage(starter("§cIl n'y a pas encore de checkpoints!"));
 						}
-						if (args.length > 2) {
-							player.sendMessage(starter("§cTrop d'arguments!"));
-						}
-						return true;
+				/*		for(Player p : Bukkit.getOnlinePlayers()){
+							if(p.isOp()){
+								p.sendMessage(starter(player.getName() + ": /jump list : off"));
+							}
+						} */
 					}
+					
+					
+					//SET
+					
 					if (args[0].equalsIgnoreCase("set")) {
 						if (args.length == 1) {
 							if (!player.isOp()) {
@@ -373,17 +367,11 @@ public class Main extends JavaPlugin {
 											.getInstance()
 											.starter(
 													"§aTu as bien set le finish à: X: "
-															+ (int) player
-																	.getLocation()
-																	.getX()
+															+ (int) player.getLocation().getX()
 															+ " Y: "
-															+ (int) player
-																	.getLocation()
-																	.getY()
+															+ (int) player.getLocation().getY()
 															+ " Z: "
-															+ (int) player
-																	.getLocation()
-																	.getZ()));
+															+ (int) player.getLocation().getZ()));
 								} else {
 									player.sendMessage(starter("§cTu dois créer le finish avant de pouvoir set!"));
 									player.sendMessage(starter("§c/jump create finish"));
@@ -400,6 +388,8 @@ public class Main extends JavaPlugin {
 						}
 						return true;
 					}
+					
+					//TP
 
 					if (args[0].equalsIgnoreCase("tp")) {
 						if (args.length == 2) {
@@ -447,6 +437,7 @@ public class Main extends JavaPlugin {
 						}
 						return true;
 					}
+					
 
 					// FIN cmd:jump
 					return true;
@@ -472,7 +463,6 @@ public class Main extends JavaPlugin {
 
 	public Location getCheckPointLocById(int id, Player player, boolean isList) {
 		Checkpoints = getConfig().getInt("Checkpoints");
-		if (!(id > Checkpoints) && (id >= 1)) {
 			double x = 0, y = 0, z = 0;
 			float pitch = 0, yaw = 0;
 			String world = null;
@@ -488,8 +478,6 @@ public class Main extends JavaPlugin {
 						+ id + "> !"));
 			}
 			return new Location(w, x, y, z, yaw, pitch);
-		}
-		return player.getLocation();
 	}
 
 	public Location getStartLoc() {
@@ -557,7 +545,7 @@ public class Main extends JavaPlugin {
 	}
 
 	private int getNextAndSetInt() {
-		Checkpoints = getConfig().getInt("Checkpoints");
+		reloadCheckConfig();
 		int i = 0;
 		i = Checkpoints + 1;
 		getConfig().set("Checkpoints", i);
@@ -567,40 +555,6 @@ public class Main extends JavaPlugin {
 	
 	private void reloadCheckConfig(){
 		Checkpoints = getConfig().getInt("Checkpoints");
-	}
-
-	@SuppressWarnings("unused")
-	private void removeCheckpoint(int id) {
-		int lastNumber = 0;
-		// Remove lignes id
-		getConfig().set("Checkpoint." + id, null);
-		// Set
-		reloadCheckConfig();
-		for(int r = 1; r < Checkpoints; r++){
-			if(!getConfig().contains("Checkpoint." + r)){
-				lastNumber = r;
-			}
-		}
-		
-		reloadCheckConfig();
-		for(int a = 1; a < Checkpoints; a++){
-			if(a > lastNumber){
-				int g = 0;
-				g = id -	1;
-				getConfig().set("Checkpoint." + id, g);
-				saveConfig();
-				reloadConfig();
-			}
-		}
-		
-		
-		
-		// Checkpoint
-		reloadCheckConfig();
-		int i = 0;
-		i = Checkpoints - 1;
-		getConfig().set("Checkpoints", i);
-		saveConfig();
 	}
 
 	@SuppressWarnings("unused")
