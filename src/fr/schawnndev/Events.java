@@ -70,18 +70,18 @@ public class Events implements Listener {
 				else {
 					if (e.getClickedBlock().getLocation() == Main
 							.getInstance()
-							.getCheckPointLocById(1, e.getPlayer())
+							.getCheckPointLocById(1, e.getPlayer(),false)
 							.getWorld()
 							.getBlockAt(
 									Main.getInstance().getCheckPointLocById(1,
-											e.getPlayer()))) {
+											e.getPlayer(), false))) {
 						vie.addVie(5);
 						check.addCheckpoint();
 						e.getPlayer().sendMessage(
 								Main.getInstance().starter("Tu as "));
 					} else if(e.getClickedBlock().getLocation() == Main
 							.getInstance()
-							.getCheckPointLocById(check.getCheckpoint(), e.getPlayer())
+							.getCheckPointLocById(check.getCheckpoint(), e.getPlayer(), false)
 							.getWorld()
 							.getBlockAt(Main.getInstance().getFinishLoc())) {
 						vie.addVie(3);
