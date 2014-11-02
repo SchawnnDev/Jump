@@ -6,6 +6,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import fr.schawnndev.utils.Vie;
@@ -120,8 +122,47 @@ public class Events implements Listener {
 		return false;
 	}
 	
-	private void log(String msg, boolean b, Player player){
-		Bukkit.broadcastMessage(Main.getInstance().starter(player.getName() + ": " + msg + " is " + b));
+	private void log(String msg, boolean b, Player player) {
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			if (player.isOp()) {
+				p.sendMessage(Main.getInstance().starter(
+						player.getName() + ": " + msg + " is " + b));
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerDamage(EntityDamageEvent e) {
+		if (e.getEntity() instanceof Player) {
+			Player p = (Player) e.getEntity();
+			if (e.getCause() == DamageCause.FALL
+					&& Main.playerInJump.contains(p)) {
+				e.setDamage(0.0);
+				if (vie.get() == 0 || vie.get() == 1) {
+					hasJumpedOne = false;
+					vie.removePlayer();
+					Main.playerCheckPoint.remove((Player) e.getEntity());
+					Main.playerInJump.remove((Player) e.getEntity());
+					((Player) e.getEntity()).teleport(Main.getInstance()
+							.getStartLoc());
+					log("remove player because vie = 0", true,
+							(Player) e.getEntity());
+					((Player) e.getEntity()).sendMessage(Main.getInstance()
+							.starter("Tu as perdu ! D':"));
+				} else {
+					vie.removeOne();
+					((Player) e.getEntity()).teleport(Main.getInstance()
+							.getCheckPointLocById(
+									Main.playerCheckPoint.get(((Player) e
+											.getEntity())),
+									((Player) e.getEntity()), true));
+					((Player) e.getEntity()).sendMessage(Main.getInstance()
+							.starter(
+									"Mince tu t'es fail! Il te reste encore "
+											+ vie.get() + " vies !"));
+				}
+			}
+		}
 	}
 	
 	@SuppressWarnings({ "unused", "deprecation" })
@@ -159,8 +200,7 @@ public class Events implements Listener {
 				if(!Main.playerCheckPoint.containsKey(player)){
 					Main.playerCheckPoint.put(player, 1);
 					vie.addVie(5);
-					player.sendMessage(Main.getInstance().starter("Bonne chance et bon amusement sur le jump!"));
-					//TODO: msg
+					player.sendMessage(Main.getInstance().starter("Tu as réussi la 1ère partie du jump!"));
 					hasJumpedOne = true;
 					log("!contaiskey && addvie 5", true, player);
 					return;
@@ -182,14 +222,14 @@ public class Events implements Listener {
 							vie.addVie(3);
 							player.sendMessage(Main.getInstance().starter("Tu as réussi la partie " + playercheck + " du jump !"));
 							Main.playerCheckPoint.put(player, playercheck);
-				//			log("Player vie" + player.getName() + ": " + vie.get(), false, player);
+							
 							log("add vie 3 && playercheck + 1", true, player);
 						} } else {
 							if(isPlayerNearby(player, Main.getInstance().getFinishLoc())){
 							player.sendMessage(Main.getInstance().starter("§aBravo! Tu as réussi le jump, tu avais encore " + vie.get() + " vies!"));
 							for(Player p : Bukkit.getOnlinePlayers()){
 								if(player != p){
-									p.sendMessage(Main.getInstance().starter(player.getName() + " vient de réussir le jump avec §5" + vie.get() + " §6vies !"));
+									p.sendMessage(Main.getInstance().starter("§" +player.getName() + " vient de réussir le jump avec §5" + vie.get() + " §6vies !"));
 								}
 							}
 							hasJumpedOne = false;
