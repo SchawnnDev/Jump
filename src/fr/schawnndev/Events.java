@@ -2,6 +2,7 @@ package fr.schawnndev;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -135,9 +136,14 @@ public class Events implements Listener {
 	public void onPlayerDamage(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
-			if (e.getCause() == DamageCause.FALL
-					&& Main.playerInJump.contains(p)) {
+			if(e.getCause() == DamageCause.FALL && Main.playerInJump.contains(p))
 				e.setDamage(0.0);
+			Location l = new Location(p.getLocation().getWorld(), p.getLocation().getX(), (p.getLocation().getY() - 1), p.getLocation().getZ());
+			if (e.getCause() == DamageCause.FALL
+					&& Main.playerInJump.contains(p) && !(l.getBlock().getType() == Material.IRON_BLOCK)) {
+				
+	//			Block b = ((Player)e.getEntity()).get
+	//			if(((Player) e.getEntity()).getLocation().getY(). = .IRON_BLOCK)
 				if (vie.get() == 0 || vie.get() == 1) {
 					hasJumpedOne = false;
 					vie.removePlayer();
@@ -232,6 +238,7 @@ public class Events implements Listener {
 									p.sendMessage(Main.getInstance().starter("§" +player.getName() + " vient de réussir le jump avec §5" + vie.get() + " §6vies !"));
 								}
 							}
+							player.teleport(Main.getInstance().getLobbyLoc());
 							hasJumpedOne = false;
 							vie.removePlayer();
 							Main.playerCheckPoint.remove(player);
@@ -242,6 +249,7 @@ public class Events implements Listener {
 						
 					} else {
 						hasJumpedOne = false;
+						player.teleport(Main.getInstance().getLobbyLoc());
 						vie.removePlayer();
 						Main.playerCheckPoint.remove(player);
 						Main.playerInJump.remove(player);

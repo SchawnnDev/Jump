@@ -96,6 +96,35 @@ public class Main extends JavaPlugin {
 		}
 		return 1;
 	}
+	
+	public void setLobby(Player player, boolean isSet) {
+		Checkpoints = getConfig().getInt("Checkpoints");
+		double x = 0, y = 0, z = 0;
+		float pitch = 0, yaw = 0;
+		String world = null;
+		if (player.getLocation().getX() < 0) {
+			x = player.getLocation().getX() /* + (-1) */;
+		} else {
+			x = player.getLocation().getX();
+		}
+		y = (player.getLocation().getY()/* + 1 */);
+		z = player.getLocation().getZ();
+		yaw = player.getLocation().getYaw();
+		pitch = player.getLocation().getPitch();
+		world = player.getLocation().getWorld().getName();
+		addCheckPointConfig(x, y, z, pitch, yaw, world, "Lobby", true, false, 0);
+		if (!isSet) {
+			player.sendMessage(starter("§aTu as crée le lobby§6: §aX: "
+					+ (int) x + " Y: " + (int) y + " Z:" + (int) z + " world: "
+					+ world));
+		} else {
+			player.sendMessage(Main.getInstance().starter(
+					"§aTu as bien set le lobby à§6:§a X: "
+							+ (int) player.getLocation().getX() + " Y: "
+							+ (int) player.getLocation().getY() + " Z: "
+							+ (int) player.getLocation().getZ()));
+		}
+	}
 
 	public void setStart(Player player, boolean isSet) {
 		Checkpoints = getConfig().getInt("Checkpoints");
@@ -112,7 +141,7 @@ public class Main extends JavaPlugin {
 		yaw = player.getLocation().getYaw();
 		pitch = player.getLocation().getPitch();
 		world = player.getLocation().getWorld().getName();
-		addCheckPointConfig(x, y, z, pitch, yaw, world, "start", true, false, 0);
+		addCheckPointConfig(x, y, z, pitch, yaw, world, "Start", true, false, 0);
 		if (!isSet) {
 			player.sendMessage(starter("§aTu as crée le start§6: §aX: "
 					+ (int) x + " Y: " + (int) y + " Z:" + (int) z + " world: "
@@ -141,17 +170,15 @@ public class Main extends JavaPlugin {
 		yaw = player.getLocation().getYaw();
 		pitch = player.getLocation().getPitch();
 		world = player.getLocation().getWorld().getName();
-		addCheckPointConfig(x, y, z, pitch, yaw, world, "finish", true, false,
+		addCheckPointConfig(x, y, z, pitch, yaw, world, "Finish", true, false,
 				0);
-		player.sendMessage(starter("§aX: " + x + " Y: " + y + " Z:" + z
-				+ " in world: " + world));
 		if (!isSet) {
 			player.sendMessage(starter("§aTu as crée le finish§6: §aX: "
 					+ (int) x + " Y: " + (int) y + " Z:" + (int) z + " world: "
 					+ world));
 		} else {
 			player.sendMessage(Main.getInstance().starter(
-					"§aTu as bien set le start à§6:§a X: "
+					"§aTu as bien set le finish à§6:§a X: "
 							+ (int) player.getLocation().getX() + " Y: "
 							+ (int) player.getLocation().getY() + " Z: "
 							+ (int) player.getLocation().getZ()));
@@ -225,8 +252,21 @@ public class Main extends JavaPlugin {
 								}
 							}
 							return true;
-						}
+						} else
 
+						if (args[1].equalsIgnoreCase("lobby")) {
+							if (args.length == 2) {
+								setLobby(player, false);
+							} else {
+								if (!player.isOp()) {
+									player.sendMessage(starter("§cTu n'es pas op!"));
+								} else {
+									player.sendMessage(starter("§cIl y a trop d'args!"));
+								}
+							}
+							return true;
+						}
+						
 						if (args[1].equalsIgnoreCase("start")) {
 							if (args.length == 2) {
 								setStart(player, false);
@@ -244,7 +284,7 @@ public class Main extends JavaPlugin {
 								}
 							}
 							return true;
-						}
+						} else
 
 						if (args[1].equalsIgnoreCase("finish")) {
 							if (args.length == 2) {
@@ -263,6 +303,8 @@ public class Main extends JavaPlugin {
 								}
 							}
 							return true;
+						} else {
+							sendHelp(player);
 						}
 
 						if (args.length == 2) {
@@ -345,7 +387,7 @@ public class Main extends JavaPlugin {
 
 						} else if (args[1].equalsIgnoreCase("start")) {
 							if (args.length == 2) {
-								if (getConfig().contains("Checkpoint.start")) {
+								if (getConfig().contains("Start")) {
 									setStart(player, true);
 								} else {
 									player.sendMessage(starter("§cTu dois créer le start avant de pouvoir set!"));
@@ -359,19 +401,26 @@ public class Main extends JavaPlugin {
 								}
 							}
 							return true;
+						} else if (args[1].equalsIgnoreCase("lobby")) {
+							if (args.length == 2) {
+								if (getConfig().contains("Lobby")) {
+									setLobby(player, true);
+								} else {
+									player.sendMessage(starter("§cTu dois créer le lobby avant de pouvoir set!"));
+									player.sendMessage(starter("§c/jump create lobby"));
+								}
+							} else {
+								if (!player.isOp()) {
+									player.sendMessage(starter("§cTu n'es pas op!"));
+								} else {
+									player.sendMessage(starter("§cTrop d'arguments!"));
+								}
+							}
+							return true;
 						} else if (args[1].equalsIgnoreCase("finish")) {
 							if (args.length == 2) {
-								if (getConfig().contains("Checkpoint.finish")) {
+								if (getConfig().contains("Finish")) {
 									setFinish(player, true);
-									player.sendMessage(Main
-											.getInstance()
-											.starter(
-													"§aTu as bien set le finish à: X: "
-															+ (int) player.getLocation().getX()
-															+ " Y: "
-															+ (int) player.getLocation().getY()
-															+ " Z: "
-															+ (int) player.getLocation().getZ()));
 								} else {
 									player.sendMessage(starter("§cTu dois créer le finish avant de pouvoir set!"));
 									player.sendMessage(starter("§c/jump create finish"));
@@ -395,20 +444,29 @@ public class Main extends JavaPlugin {
 						if (args.length == 2) {
 							int u = 0;
 							if (args[1].equalsIgnoreCase("start")) {
-								if (getConfig().contains("Checkpoint.start")) {
+								if (getConfig().contains("Start")) {
 									player.teleport(getStartLoc());
 									player.sendMessage(starter("§aTu viens d'être téléporté au start!"));
 								} else {
-									player.sendMessage(starter("§cTu n'as pas set le start !"));
+									player.sendMessage(starter("§cTu n'as pas crée le start !"));
+								}
+								return true;
+							}
+							if (args[1].equalsIgnoreCase("lobby")) {
+								if (getConfig().contains("Lobby")) {
+									player.teleport(getStartLoc());
+									player.sendMessage(starter("§aTu viens d'être téléporté au lobby!"));
+								} else {
+									player.sendMessage(starter("§cTu n'as pas crée le lobby !"));
 								}
 								return true;
 							}
 							if (args[1].equalsIgnoreCase("finish")) {
-								if (getConfig().contains("Checkpoint.finish")) {
+								if (getConfig().contains("Finish")) {
 									player.teleport(getFinishLoc());
 									player.sendMessage(starter("§aTu viens d'être téléporté au finish!"));
 								} else {
-									player.sendMessage(starter("§cTu n'as pas set le finish !"));
+									player.sendMessage(starter("§cTu n'as pas crée le finish !"));
 								}
 								return true;
 							}
@@ -431,6 +489,7 @@ public class Main extends JavaPlugin {
 							player.sendMessage(starter("§c/jump tp <id>"));
 							player.sendMessage(starter("§c/jump tp start"));
 							player.sendMessage(starter("§c/jump tp finish"));
+							player.sendMessage(starter("§c/jump tp lobby"));
 						}
 						if (args.length > 2) {
 							player.sendMessage(starter("§cTrop d'arguments!"));
@@ -484,12 +543,12 @@ public class Main extends JavaPlugin {
 		double x = 0, y = 0, z = 0;
 		float pitch = 0, yaw = 0;
 		String world = null;
-		x = getConfig().getDouble("Checkpoint." + "start" + ".x");
-		y = getConfig().getDouble("Checkpoint." + "start" + ".y");
-		z = getConfig().getDouble("Checkpoint." + "start" + ".z");
-		pitch = getConfig().getLong("Checkpoint." + "start" + ".pitch");
-		yaw = getConfig().getLong("Checkpoint." + "start" + ".yaw");
-		world = getConfig().getString("Checkpoint." + "start" + ".world");
+		x = getConfig().getDouble("Start" + ".x");
+		y = getConfig().getDouble("Start" + ".y");
+		z = getConfig().getDouble("Start" + ".z");
+		pitch = getConfig().getLong("Start" + ".pitch");
+		yaw = getConfig().getLong("Start" + ".yaw");
+		world = getConfig().getString("Start" + ".world");
 		World w = Bukkit.getWorld(world);
 		return new Location(w, x, y, z, yaw, pitch);
 	}
@@ -498,15 +557,30 @@ public class Main extends JavaPlugin {
 		double x = 0, y = 0, z = 0;
 		float pitch = 0, yaw = 0;
 		String world = null;
-		x = getConfig().getDouble("Checkpoint." + "finish" + ".x");
-		y = getConfig().getDouble("Checkpoint." + "finish" + ".y");
-		z = getConfig().getDouble("Checkpoint." + "finish" + ".z");
-		pitch = getConfig().getLong("Checkpoint." + "finish" + ".pitch");
-		yaw = getConfig().getLong("Checkpoint." + "finish" + ".yaw");
-		world = getConfig().getString("Checkpoint." + "finish" + ".world");
+		x = getConfig().getDouble("Finish" + ".x");
+		y = getConfig().getDouble("Finish" + ".y");
+		z = getConfig().getDouble("Finish" + ".z");
+		pitch = getConfig().getLong("Finish" + ".pitch");
+		yaw = getConfig().getLong("Finish" + ".yaw");
+		world = getConfig().getString("Finish" + ".world");
 		World w = Bukkit.getWorld(world);
 		return new Location(w, x, y, z, yaw, pitch);
 	}
+	
+	public Location getLobbyLoc() {
+		double x = 0, y = 0, z = 0;
+		float pitch = 0, yaw = 0;
+		String world = null;
+		x = getConfig().getDouble("Lobby" + ".x");
+		y = getConfig().getDouble("Lobby" + ".y");
+		z = getConfig().getDouble("Lobby" + ".z");
+		pitch = getConfig().getLong("Lobby" + ".pitch");
+		yaw = getConfig().getLong("Lobby" + ".yaw");
+		world = getConfig().getString("Lobby" + ".world");
+		World w = Bukkit.getWorld(world);
+		return new Location(w, x, y, z, yaw, pitch);
+	}
+
 
 	private void addCheckPointConfig(double x, double y, double z, float pitch,
 			float yaw, String world, String name, boolean isName, boolean isId,
@@ -534,12 +608,12 @@ public class Main extends JavaPlugin {
 				}
 			}
 		} else {
-			getConfig().set("Checkpoint." + name + ".x", x);
-			getConfig().set("Checkpoint." + name + ".y", y);
-			getConfig().set("Checkpoint." + name + ".z", z);
-			getConfig().set("Checkpoint." + name + ".pitch", pitch);
-			getConfig().set("Checkpoint." + name + ".yaw", yaw);
-			getConfig().set("Checkpoint." + name + ".world", world);
+			getConfig().set(name + ".x", x);
+			getConfig().set(name + ".y", y);
+			getConfig().set(name + ".z", z);
+			getConfig().set(name + ".pitch", pitch);
+			getConfig().set(name + ".yaw", yaw);
+			getConfig().set(name + ".world", world);
 		}
 		saveConfig();
 	}
