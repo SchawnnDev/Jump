@@ -14,6 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.sun.xml.internal.ws.resources.SenderMessages;
+
 public class Main extends JavaPlugin {
 
 	// > = plus grand | < = plus petit ;
@@ -87,16 +89,16 @@ public class Main extends JavaPlugin {
 							+ (int) player.getLocation().getZ()));
 		}
 	}
-	
-	public int getCheckpoint(){
+
+	public int getCheckpoint() {
 		reloadCheckConfig();
 		reloadConfig();
-		if(getConfig().getInt("Checkpoints") != 0){
+		if (getConfig().getInt("Checkpoints") != 0) {
 			return getConfig().getInt("Checkpoints");
 		}
 		return 1;
 	}
-	
+
 	public void setLobby(Player player, boolean isSet) {
 		Checkpoints = getConfig().getInt("Checkpoints");
 		double x = 0, y = 0, z = 0;
@@ -186,12 +188,18 @@ public class Main extends JavaPlugin {
 	}
 
 	public void sendHelp(Player player) {
-		player.sendMessage(starter("§3--- §eJUMP HELP §3---"));
-		player.sendMessage(starter("§3/jump create checkpoint"));
-		player.sendMessage(starter("§3/jump remove checkpoint <id>"));
-		player.sendMessage(starter("§3/jump list checkpoint"));
-		player.sendMessage(starter("§3/jump set start"));
-		player.sendMessage(starter("§3/jump set finish"));
+		player.sendMessage(starter("§3--------- §1Jump help §3---------"));
+		player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+		player.sendMessage(starter("§3--------- §1Commandes §3---------"));
+		player.sendMessage(starter("§5Liste des checkpoints:"));
+		player.sendMessage(starter("§3/jump list"));
+		player.sendMessage(starter("§5Créer le point de téléportation:"));
+		player.sendMessage(starter("§3/jump create checkpoint/start/finish/lobby"));
+		player.sendMessage(starter("§5Set(Modifier) le point de téléportation:"));
+		player.sendMessage(starter("§3/jump set start/finish/lobby"));
+		player.sendMessage(starter("§3/jump set checkpoint <id>"));
+		player.sendMessage(starter("§5Téléportation aux points de téléportation:"));
+		player.sendMessage(starter("§3/jump tp lobby/finish/start"));
 		player.sendMessage(starter("§3/jump tp checkpoint <id>"));
 	}
 
@@ -206,21 +214,21 @@ public class Main extends JavaPlugin {
 
 					if (args.length == 0) {
 						if (!player.isOp()) {
-							player.sendMessage(starter("§cTu n'es pas op!"));
+							player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 						} else {
 							sendHelp(player);
 						}
 						return true;
 					}
-					
-					//CREATE
+
+					// CREATE
 
 					// if (args.length == 1) {
 					if (args[0].equalsIgnoreCase("create")) {
 
 						if (args.length == 1) {
 							if (!player.isOp()) {
-								player.sendMessage(starter("§cTu n'es pas op!"));
+								player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 							} else {
 								sendHelp(player);
 							}
@@ -229,7 +237,7 @@ public class Main extends JavaPlugin {
 
 						if (args.length > 3) {
 							if (!player.isOp()) {
-								player.sendMessage(starter("§cTu n'es pas op!"));
+								player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 							} else {
 								sendHelp(player);
 							}
@@ -246,7 +254,7 @@ public class Main extends JavaPlugin {
 								player.getInventory().addItem(stack);
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
+									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
 									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
@@ -259,14 +267,14 @@ public class Main extends JavaPlugin {
 								setLobby(player, false);
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
+									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
 									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
 							}
 							return true;
 						}
-						
+
 						if (args[1].equalsIgnoreCase("start")) {
 							if (args.length == 2) {
 								setStart(player, false);
@@ -278,7 +286,7 @@ public class Main extends JavaPlugin {
 								player.getInventory().addItem(stack);
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
+									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
 									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
@@ -297,7 +305,7 @@ public class Main extends JavaPlugin {
 								stack.setItemMeta(metaStack);
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
+									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
 									player.sendMessage(starter("§cIl y a trop d'args!"));
 								}
@@ -309,7 +317,7 @@ public class Main extends JavaPlugin {
 
 						if (args.length == 2) {
 							if (!player.isOp()) {
-								player.sendMessage(starter("§cTu n'es pas op!"));
+								player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 							} else {
 								sendHelp(player);
 							}
@@ -318,40 +326,46 @@ public class Main extends JavaPlugin {
 
 						return true;
 					}
-					
-					//LIST
-					
-					if(args[0].equalsIgnoreCase("list")){
+
+					// LIST
+
+					if (args[0].equalsIgnoreCase("list")) {
 						reloadCheckConfig();
-					/*	for(Player p : Bukkit.getOnlinePlayers()){
-							if(p.isOp()){
-								p.sendMessage(starter(player.getName() + ": /jump list : on"));
+						/*
+						 * for(Player p : Bukkit.getOnlinePlayers()){
+						 * if(p.isOp()){ p.sendMessage(starter(player.getName()
+						 * + ": /jump list : on")); } }
+						 */
+						if (getConfig().getInt("Checkpoints") != 0) {
+							for (int i = 1; i <= Checkpoints; i++) {
+								player.sendMessage(starter("Checkpoint "
+										+ i
+										+ "§6: §5X: §6"
+										+ (int) this.getCheckPointLocById(i,
+												player, true).getX()
+										+ " §5Y: §6"
+										+ (int) this.getCheckPointLocById(i,
+												player, true).getY()
+										+ " §5Z: §6"
+										+ (int) this.getCheckPointLocById(i,
+												player, true).getZ()));
 							}
-						} */
-						if(getConfig().getInt("Checkpoints") != 0){
-						for(int i = 1; i <= Checkpoints; i++){
-							player.sendMessage(starter("Checkpoint " + i + "§6: §5X: §6"
-									+ (int) this.getCheckPointLocById(i,player, true).getX()+ " §5Y: §6"
-									+ (int) this.getCheckPointLocById(i,player, true).getY()+ " §5Z: §6"
-									+ (int) this.getCheckPointLocById(i,player, true).getZ()));
-						}
 						} else {
 							player.sendMessage(starter("§cIl n'y a pas encore de checkpoints!"));
 						}
-				/*		for(Player p : Bukkit.getOnlinePlayers()){
-							if(p.isOp()){
-								p.sendMessage(starter(player.getName() + ": /jump list : off"));
-							}
-						} */
+						/*
+						 * for(Player p : Bukkit.getOnlinePlayers()){
+						 * if(p.isOp()){ p.sendMessage(starter(player.getName()
+						 * + ": /jump list : off")); } }
+						 */
 					}
-					
-					
-					//SET
-					
+
+					// SET
+
 					if (args[0].equalsIgnoreCase("set")) {
 						if (args.length == 1) {
 							if (!player.isOp()) {
-								player.sendMessage(starter("§cTu n'es pas op!"));
+								player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 							} else {
 								player.sendMessage(starter("§cIl manque des args:"));
 								player.sendMessage(starter("§c/jump set start"));
@@ -395,7 +409,7 @@ public class Main extends JavaPlugin {
 								}
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
+									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
 									player.sendMessage(starter("§cTrop d'arguments!"));
 								}
@@ -411,7 +425,7 @@ public class Main extends JavaPlugin {
 								}
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
+									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
 									player.sendMessage(starter("§cTrop d'arguments!"));
 								}
@@ -427,7 +441,7 @@ public class Main extends JavaPlugin {
 								}
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§cTu n'es pas op!"));
+									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
 									player.sendMessage(starter("§cTrop d'arguments!"));
 								}
@@ -437,8 +451,8 @@ public class Main extends JavaPlugin {
 						}
 						return true;
 					}
-					
-					//TP
+
+					// TP
 
 					if (args[0].equalsIgnoreCase("tp")) {
 						if (args.length == 2) {
@@ -496,7 +510,6 @@ public class Main extends JavaPlugin {
 						}
 						return true;
 					}
-					
 
 					// FIN cmd:jump
 					return true;
@@ -511,7 +524,7 @@ public class Main extends JavaPlugin {
 				return true;
 			}
 		} else {
-			player.sendMessage(starter("§cTu n'es pas op!"));
+			player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
 		}
 		return false;
 	}
@@ -522,21 +535,21 @@ public class Main extends JavaPlugin {
 
 	public Location getCheckPointLocById(int id, Player player, boolean isList) {
 		Checkpoints = getConfig().getInt("Checkpoints");
-			double x = 0, y = 0, z = 0;
-			float pitch = 0, yaw = 0;
-			String world = null;
-			x = getConfig().getDouble("Checkpoint." + id + ".x");
-			y = getConfig().getDouble("Checkpoint." + id + ".y");
-			z = getConfig().getDouble("Checkpoint." + id + ".z");
-			pitch = getConfig().getLong("Checkpoint." + id + ".pitch");
-			yaw = getConfig().getLong("Checkpoint." + id + ".yaw");
-			world = getConfig().getString("Checkpoint." + id + ".world");
-			World w = Bukkit.getWorld(world);
-			if (!isList) {
-				player.sendMessage(starter("§aTu viens d'être téléporté au checkpoint <"
-						+ id + "> !"));
-			}
-			return new Location(w, x, y, z, yaw, pitch);
+		double x = 0, y = 0, z = 0;
+		float pitch = 0, yaw = 0;
+		String world = null;
+		x = getConfig().getDouble("Checkpoint." + id + ".x");
+		y = getConfig().getDouble("Checkpoint." + id + ".y");
+		z = getConfig().getDouble("Checkpoint." + id + ".z");
+		pitch = getConfig().getLong("Checkpoint." + id + ".pitch");
+		yaw = getConfig().getLong("Checkpoint." + id + ".yaw");
+		world = getConfig().getString("Checkpoint." + id + ".world");
+		World w = Bukkit.getWorld(world);
+		if (!isList) {
+			player.sendMessage(starter("§aTu viens d'être téléporté au checkpoint <"
+					+ id + "> !"));
+		}
+		return new Location(w, x, y, z, yaw, pitch);
 	}
 
 	public Location getStartLoc() {
@@ -566,7 +579,7 @@ public class Main extends JavaPlugin {
 		World w = Bukkit.getWorld(world);
 		return new Location(w, x, y, z, yaw, pitch);
 	}
-	
+
 	public Location getLobbyLoc() {
 		double x = 0, y = 0, z = 0;
 		float pitch = 0, yaw = 0;
@@ -580,7 +593,6 @@ public class Main extends JavaPlugin {
 		World w = Bukkit.getWorld(world);
 		return new Location(w, x, y, z, yaw, pitch);
 	}
-
 
 	private void addCheckPointConfig(double x, double y, double z, float pitch,
 			float yaw, String world, String name, boolean isName, boolean isId,
@@ -626,8 +638,8 @@ public class Main extends JavaPlugin {
 		saveConfig();
 		return i;
 	}
-	
-	private void reloadCheckConfig(){
+
+	private void reloadCheckConfig() {
 		Checkpoints = getConfig().getInt("Checkpoints");
 	}
 
