@@ -468,7 +468,7 @@ public class Main extends JavaPlugin {
 							}
 							if (args[1].equalsIgnoreCase("lobby")) {
 								if (getConfig().contains("Lobby")) {
-									player.teleport(getStartLoc());
+									player.teleport(getLobbyLoc());
 									player.sendMessage(starter("§aTu viens d'être téléporté au lobby!"));
 								} else {
 									player.sendMessage(starter("§cTu n'as pas crée le lobby !"));

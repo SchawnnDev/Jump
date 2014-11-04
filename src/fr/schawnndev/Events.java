@@ -25,96 +25,6 @@ public class Events implements Listener {
 		pl = plugin;
 	}
 
-/*	@EventHandler
-	public void onPlayerStep(PlayerInteractEvent e) {
-		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			Player p = e.getPlayer();
-			int x = 0;
-			if (e.getClickedBlock().getType().equals(Material.STONE_BUTTON)) {
-				Bukkit.broadcastMessage(Main.getInstance().starter(
-						e.getPlayer().getName()
-								+ " clicBouttonEvent ButtonLoc: §5X: §6"
-								+ (int) e.getClickedBlock().getX() + " §5Y: §6"
-								+ (int) e.getClickedBlock().getY() + " §5Z: §6"
-								+ (int) e.getClickedBlock().getZ()));
-				if (p.getLocation().getX() < 0) {
-					x = (int) (p.getLocation().getX() + (-1));
-				} else {
-					x = (int) p.getLocation().getX();
-				}
-				Bukkit.broadcastMessage(Main.getInstance().starter(
-						e.getPlayer().getName()
-								+ " clicBouttonEvent PlayerLoc: §5X: §6"
-								+ x + " §5Y: §6"
-								+ (int) (e.getPlayer().getLocation().getY() + 1) + " §5Z: §6"
-								+ (int) e.getPlayer().getLocation().getZ()));
-				e.getPlayer().sendMessage(
-						Main.getInstance().starter(
-								"Tu as appuié sur le boutton start !"));
-				this.check = new Checkpoints(e.getPlayer());
-				this.vie = new Vie(e.getPlayer());
-				
-				if(!Main.playerInJump.contains(e.getPlayer())){
-
-				if (e.getClickedBlock().equals("Jump_Start")) {
-					
-				}
-					
-				if (e.getClickedBlock().equals("Jump_Stop")) {	
-					check.addCheckpoint();
-					vie.addPlayer();
-					Main.playerInJump.add(e.getPlayer());
-					e.getPlayer().sendMessage(
-							Main.getInstance().starter(
-									"Bienvenue au jump et bonne chance !"));
-					}
-				}
-				else {
-					if (e.getClickedBlock().getLocation() == Main
-							.getInstance()
-							.getCheckPointLocById(1, e.getPlayer(),false)
-							.getWorld()
-							.getBlockAt(
-									Main.getInstance().getCheckPointLocById(1,
-											e.getPlayer(), false))) {
-						vie.addVie(5);
-						check.addCheckpoint();
-						e.getPlayer().sendMessage(
-								Main.getInstance().starter("Tu as "));
-					} else if(e.getClickedBlock().getLocation() == Main
-							.getInstance()
-							.getCheckPointLocById(check.getCheckpoint(), e.getPlayer(), false)
-							.getWorld()
-							.getBlockAt(Main.getInstance().getFinishLoc())) {
-						vie.addVie(3);
-						check.addCheckpoint();
-						e.getPlayer().sendMessage(
-								Main.getInstance().starter(
-										"Bienvenue au jump et bonne chance !"));
-					} else if (e.getClickedBlock().getLocation() == Main
-							.getInstance().getFinishLoc().getWorld()
-							.getBlockAt(Main.getInstance().getFinishLoc())) { 
-																
-						e.getPlayer().sendMessage(
-								Main.getInstance().starter(
-										"Bravo tu as réussi le jump!"));
-						Bukkit.broadcastMessage(Main.getInstance().starter(
-								e.getPlayer().getName()
-										+ " a réussi le jump avec §4" + vie.get()
-										+ " vies §6!"));
-
-						// Partie remove 
-						Main.playerInJump.remove(e.getPlayer());
-						this.vie.removePlayer();
-						this.check.removePlayer();
-					}
-				}
-			}
-
-		}
-	} */
-	//CHECKPOINTS: 1 = default;
-	
 	private boolean isPlayerNearby(Player player, Location loc) {
 		int radius = 5;
 		if (player.getLocation().distance(loc) <= radius) {
@@ -137,11 +47,12 @@ public class Events implements Listener {
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
 			if(e.getCause() == DamageCause.FALL && Main.playerInJump.contains(p))
+				log("jump damage = "+ e.getDamage(), true, ((Player)e.getEntity()));
 				e.setDamage(0.0);
 			Location l = new Location(p.getLocation().getWorld(), p.getLocation().getX(), (p.getLocation().getY() - 1), p.getLocation().getZ());
 			if (e.getCause() == DamageCause.FALL
-					&& Main.playerInJump.contains(p) && !(l.getBlock().getType() == Material.IRON_BLOCK)) {
-				
+					&& Main.playerInJump.contains(p)) {
+				if(!(l.getBlock().getType() == Material.IRON_BLOCK) && !(l.getBlock().getType() == Material.AIR))
 	//			Block b = ((Player)e.getEntity()).get
 	//			if(((Player) e.getEntity()).getLocation().getY(). = .IRON_BLOCK)
 				if (vie.get() == 0 || vie.get() == 1) {
@@ -162,18 +73,28 @@ public class Events implements Listener {
 									Main.playerCheckPoint.get(((Player) e
 											.getEntity())),
 									((Player) e.getEntity()), true));
-					((Player) e.getEntity()).sendMessage(Main.getInstance()
-							.starter(
-									"Mince tu t'es fail! Il te reste encore "
-											+ vie.get() + " vies !"));
+					if(vie.get() <= 1){
+						((Player) e.getEntity()).sendMessage(Main.getInstance()
+								.starter(
+										"Mince tu t'es fail! Il te reste encore "
+												+ vie.get() + " vie !"));
+					} else {
+						((Player) e.getEntity()).sendMessage(Main.getInstance()
+								.starter(
+										"Mince tu t'es fail! Il te reste encore "
+												+ vie.get() + " vies !"));
+				}
+
 				}
 			}
+	
 		}
 	}
 	
 	@SuppressWarnings({ "unused", "deprecation" })
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent e) {
+		if(e.getPlayer() instanceof Player){
 		Player player = e.getPlayer();
 		Location playerLoc = player.getLocation();
 		int ID = playerLoc.getWorld().getBlockAt(playerLoc)
@@ -206,7 +127,7 @@ public class Events implements Listener {
 				if(!Main.playerCheckPoint.containsKey(player)){
 					Main.playerCheckPoint.put(player, 1);
 					vie.addVie(5);
-					player.sendMessage(Main.getInstance().starter("Tu as réussi la 1ère partie du jump!"));
+					player.sendMessage(Main.getInstance().starter("Tu as réussi la 1ère partie du jump! (+5 vies)"));
 					hasJumpedOne = true;
 					log("!contaiskey && addvie 5", true, player);
 					return;
@@ -226,17 +147,25 @@ public class Events implements Listener {
 						if(playercheck <= Main.getInstance().getCheckpoint()){
 							if(isPlayerNearby(player, Main.getInstance().getCheckPointLocById(playercheck, player, true))){
 							vie.addVie(3);
-							player.sendMessage(Main.getInstance().starter("Tu as réussi la partie " + playercheck + " du jump !"));
+							player.sendMessage(Main.getInstance().starter("Tu as réussi la " + playercheck + "ème partie du jump ! (+3 vies)"));
 							Main.playerCheckPoint.put(player, playercheck);
-							
 							log("add vie 3 && playercheck + 1", true, player);
 						} } else {
 							if(isPlayerNearby(player, Main.getInstance().getFinishLoc())){
-							player.sendMessage(Main.getInstance().starter("§aBravo! Tu as réussi le jump, tu avais encore " + vie.get() + " vies!"));
-							for(Player p : Bukkit.getOnlinePlayers()){
+								if(vies <= 1){
+									player.sendMessage(Main.getInstance().starter("§aBravo! Tu as réussi le jump avec encore " + vie.get() + " vie!"));
+								} else {
+							player.sendMessage(Main.getInstance().starter("§aBravo! Tu as réussi le jump avec encore " + vie.get() + " vies!"));
+							}
+								for(Player p : Bukkit.getOnlinePlayers()){
 								if(player != p){
-									p.sendMessage(Main.getInstance().starter("§" +player.getName() + " vient de réussir le jump avec §5" + vie.get() + " §6vies !"));
-								}
+									if(vies <= 1){
+									
+									p.sendMessage(Main.getInstance().starter("§" +player.getName() + " vient de réussir le jump avec §5" + vie.get() + " §6vie !"));
+									} else {
+										p.sendMessage(Main.getInstance().starter("§" +player.getName() + " vient de réussir le jump avec §5" + vie.get() + " §6vies !"));	
+									}
+									}
 							}
 							player.teleport(Main.getInstance().getLobbyLoc());
 							hasJumpedOne = false;
@@ -268,6 +197,7 @@ public class Events implements Listener {
 			
 			
 			//fin if == 70
+			}
 		}
 	}
 }
