@@ -14,8 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.sun.xml.internal.ws.resources.SenderMessages;
-
 public class Main extends JavaPlugin {
 
 	public static ArrayList<Player> playerInJump = new ArrayList<Player>();
