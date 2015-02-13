@@ -18,8 +18,6 @@ import com.sun.xml.internal.ws.resources.SenderMessages;
 
 public class Main extends JavaPlugin {
 
-	// > = plus grand | < = plus petit ;
-
 	public static ArrayList<Player> playerInJump = new ArrayList<Player>();
 	public static HashMap<Player, Integer> playerCheckPoint = new HashMap<Player, Integer>();
 
@@ -55,8 +53,8 @@ public class Main extends JavaPlugin {
 		world = player.getLocation().getWorld().getName();
 		addCheckPointConfig(x, y, z, pitch, yaw, world, "", false, false, 0);
 		if (!isSet) {
-			player.sendMessage(starter("§aTu as crée le checkpoint "
-					+ Checkpoints + "§6: §aX: " + (int) x + " Y: " + (int) y
+			player.sendMessage(starter("Â§aTu as crÃ©e le checkpoint "
+					+ Checkpoints + "Â§6: Â§aX: " + (int) x + " Y: " + (int) y
 					+ " Z:" + (int) z + " world: " + world));
 		}
 	}
@@ -78,12 +76,12 @@ public class Main extends JavaPlugin {
 		world = player.getLocation().getWorld().getName();
 		addCheckPointConfig(x, y, z, pitch, yaw, world, "", false, true, id);
 		if (!isSet) {
-			player.sendMessage(starter("§aTu as crée le checkpoint "
-					+ Checkpoints + "§6: §aX: " + (int) x + " Y: " + (int) y
+			player.sendMessage(starter("Â§aTu as crÃ©e le checkpoint "
+					+ Checkpoints + "Â§6: Â§aX: " + (int) x + " Y: " + (int) y
 					+ " Z:" + (int) z + " world: " + world));
 		} else {
 			player.sendMessage(Main.getInstance().starter(
-					"§aTu as bien set le checkpoint " + id + " à§6:§a X: "
+					"Â§aTu as bien set le checkpoint " + id + " Ã Â§6:Â§a X: "
 							+ (int) player.getLocation().getX() + " Y: "
 							+ (int) player.getLocation().getY() + " Z: "
 							+ (int) player.getLocation().getZ()));
@@ -116,12 +114,12 @@ public class Main extends JavaPlugin {
 		world = player.getLocation().getWorld().getName();
 		addCheckPointConfig(x, y, z, pitch, yaw, world, "Lobby", true, false, 0);
 		if (!isSet) {
-			player.sendMessage(starter("§aTu as crée le lobby§6: §aX: "
+			player.sendMessage(starter("Â§aTu as crÃ©e le lobbyÂ§6: Â§aX: "
 					+ (int) x + " Y: " + (int) y + " Z:" + (int) z + " world: "
 					+ world));
 		} else {
 			player.sendMessage(Main.getInstance().starter(
-					"§aTu as bien set le lobby à§6:§a X: "
+					"Â§aTu as bien set le lobby Ã Â§6:Â§a X: "
 							+ (int) player.getLocation().getX() + " Y: "
 							+ (int) player.getLocation().getY() + " Z: "
 							+ (int) player.getLocation().getZ()));
@@ -145,12 +143,12 @@ public class Main extends JavaPlugin {
 		world = player.getLocation().getWorld().getName();
 		addCheckPointConfig(x, y, z, pitch, yaw, world, "Start", true, false, 0);
 		if (!isSet) {
-			player.sendMessage(starter("§aTu as crée le start§6: §aX: "
+			player.sendMessage(starter("Â§aTu as crÃ©e le startÂ§6: Â§aX: "
 					+ (int) x + " Y: " + (int) y + " Z:" + (int) z + " world: "
 					+ world));
 		} else {
 			player.sendMessage(Main.getInstance().starter(
-					"§aTu as bien set le start à§6:§a X: "
+					"Â§aTu as bien set le start Ã Â§6:Â§a X: "
 							+ (int) player.getLocation().getX() + " Y: "
 							+ (int) player.getLocation().getY() + " Z: "
 							+ (int) player.getLocation().getZ()));
@@ -175,12 +173,12 @@ public class Main extends JavaPlugin {
 		addCheckPointConfig(x, y, z, pitch, yaw, world, "Finish", true, false,
 				0);
 		if (!isSet) {
-			player.sendMessage(starter("§aTu as crée le finish§6: §aX: "
+			player.sendMessage(starter("Â§aTu as crÃ©e le finishÂ§6: Â§aX: "
 					+ (int) x + " Y: " + (int) y + " Z:" + (int) z + " world: "
 					+ world));
 		} else {
 			player.sendMessage(Main.getInstance().starter(
-					"§aTu as bien set le finish à§6:§a X: "
+					"Â§aTu as bien set le finish Ã Â§6:Â§a X: "
 							+ (int) player.getLocation().getX() + " Y: "
 							+ (int) player.getLocation().getY() + " Z: "
 							+ (int) player.getLocation().getZ()));
@@ -188,19 +186,19 @@ public class Main extends JavaPlugin {
 	}
 
 	public void sendHelp(Player player) {
-		player.sendMessage(starter("§3--------- §1Jump help §3---------"));
-		player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
-		player.sendMessage(starter("§3--------- §1Commandes §3---------"));
-		player.sendMessage(starter("§5Liste des checkpoints:"));
-		player.sendMessage(starter("§3/jump list"));
-		player.sendMessage(starter("§5Créer le point de téléportation:"));
-		player.sendMessage(starter("§3/jump create checkpoint/start/finish/lobby"));
-		player.sendMessage(starter("§5Set(Modifier) le point de téléportation:"));
-		player.sendMessage(starter("§3/jump set start/finish/lobby"));
-		player.sendMessage(starter("§3/jump set checkpoint <id>"));
-		player.sendMessage(starter("§5Téléportation aux points de téléportation:"));
-		player.sendMessage(starter("§3/jump tp lobby/finish/start"));
-		player.sendMessage(starter("§3/jump tp checkpoint <id>"));
+		player.sendMessage(starter("Â§3--------- Â§1Jump help Â§3---------"));
+		player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
+		player.sendMessage(starter("Â§3--------- Â§1Commandes Â§3---------"));
+		player.sendMessage(starter("Â§5Liste des checkpoints:"));
+		player.sendMessage(starter("Â§3/jump list"));
+		player.sendMessage(starter("Â§5CrÃ©er le point de tÃ©lÃ©portation:"));
+		player.sendMessage(starter("Â§3/jump create checkpoint/start/finish/lobby"));
+		player.sendMessage(starter("Â§5Set(Modifier) le point de tÃ©lÃ©portation:"));
+		player.sendMessage(starter("Â§3/jump set start/finish/lobby"));
+		player.sendMessage(starter("Â§3/jump set checkpoint <id>"));
+		player.sendMessage(starter("Â§5TÃ©lÃ©portation aux points de tÃ©lÃ©portation:"));
+		player.sendMessage(starter("Â§3/jump tp lobby/finish/start"));
+		player.sendMessage(starter("Â§3/jump tp checkpoint <id>"));
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
@@ -214,7 +212,7 @@ public class Main extends JavaPlugin {
 
 					if (args.length == 0) {
 						if (!player.isOp()) {
-							player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+							player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 						} else {
 							sendHelp(player);
 						}
@@ -228,7 +226,7 @@ public class Main extends JavaPlugin {
 
 						if (args.length == 1) {
 							if (!player.isOp()) {
-								player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+								player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 							} else {
 								sendHelp(player);
 							}
@@ -237,7 +235,7 @@ public class Main extends JavaPlugin {
 
 						if (args.length > 3) {
 							if (!player.isOp()) {
-								player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+								player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 							} else {
 								sendHelp(player);
 							}
@@ -254,9 +252,9 @@ public class Main extends JavaPlugin {
 								player.getInventory().addItem(stack);
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+									player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
-									player.sendMessage(starter("§cIl y a trop d'args!"));
+									player.sendMessage(starter("Â§cIl y a trop d'args!"));
 								}
 							}
 							return true;
@@ -267,9 +265,9 @@ public class Main extends JavaPlugin {
 								setLobby(player, false);
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+									player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
-									player.sendMessage(starter("§cIl y a trop d'args!"));
+									player.sendMessage(starter("Â§cIl y a trop d'args!"));
 								}
 							}
 							return true;
@@ -286,9 +284,9 @@ public class Main extends JavaPlugin {
 								player.getInventory().addItem(stack);
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+									player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
-									player.sendMessage(starter("§cIl y a trop d'args!"));
+									player.sendMessage(starter("Â§cIl y a trop d'args!"));
 								}
 							}
 							return true;
@@ -305,9 +303,9 @@ public class Main extends JavaPlugin {
 								stack.setItemMeta(metaStack);
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+									player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
-									player.sendMessage(starter("§cIl y a trop d'args!"));
+									player.sendMessage(starter("Â§cIl y a trop d'args!"));
 								}
 							}
 							return true;
@@ -317,7 +315,7 @@ public class Main extends JavaPlugin {
 
 						if (args.length == 2) {
 							if (!player.isOp()) {
-								player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+								player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 							} else {
 								sendHelp(player);
 							}
@@ -340,18 +338,18 @@ public class Main extends JavaPlugin {
 							for (int i = 1; i <= Checkpoints; i++) {
 								player.sendMessage(starter("Checkpoint "
 										+ i
-										+ "§6: §5X: §6"
+										+ "Â§6: Â§5X: Â§6"
 										+ (int) this.getCheckPointLocById(i,
 												player, true).getX()
-										+ " §5Y: §6"
+										+ " Â§5Y: Â§6"
 										+ (int) this.getCheckPointLocById(i,
 												player, true).getY()
-										+ " §5Z: §6"
+										+ " Â§5Z: Â§6"
 										+ (int) this.getCheckPointLocById(i,
 												player, true).getZ()));
 							}
 						} else {
-							player.sendMessage(starter("§cIl n'y a pas encore de checkpoints!"));
+							player.sendMessage(starter("Â§cIl n'y a pas encore de checkpoints!"));
 						}
 						/*
 						 * for(Player p : Bukkit.getOnlinePlayers()){
@@ -365,12 +363,12 @@ public class Main extends JavaPlugin {
 					if (args[0].equalsIgnoreCase("set")) {
 						if (args.length == 1) {
 							if (!player.isOp()) {
-								player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+								player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 							} else {
-								player.sendMessage(starter("§cIl manque des args:"));
-								player.sendMessage(starter("§c/jump set start"));
-								player.sendMessage(starter("§c/jump set checkpoint <id>"));
-								player.sendMessage(starter("§c/jump set finish"));
+								player.sendMessage(starter("Â§cIl manque des args:"));
+								player.sendMessage(starter("Â§c/jump set start"));
+								player.sendMessage(starter("Â§c/jump set checkpoint <id>"));
+								player.sendMessage(starter("Â§c/jump set finish"));
 							}
 							return true;
 						}
@@ -381,21 +379,21 @@ public class Main extends JavaPlugin {
 									String s = args[2];
 									u = Integer.parseInt(s);
 								} catch (NumberFormatException e) {
-									player.sendMessage(starter("§cCe n'est pas une id!"));
+									player.sendMessage(starter("Â§cCe n'est pas une id!"));
 									return true;
 								}
 
 								if (getConfig().contains("Checkpoint." + u)) {
 									setCheckpointById(player, u, true);
 								} else {
-									player.sendMessage(starter("§cL'id n'est pas enregistrée!"));
+									player.sendMessage(starter("Â§cL'id n'est pas enregistrÃ©e!"));
 								}
 							}
 							if (args.length == 2) {
-								player.sendMessage(starter("§cIl manque une id: /jump set checkpoint <id>"));
+								player.sendMessage(starter("Â§cIl manque une id: /jump set checkpoint <id>"));
 							}
 							if (args.length > 3) {
-								player.sendMessage(starter("§cTrop d'arguments!"));
+								player.sendMessage(starter("Â§cTrop d'arguments!"));
 							}
 							return true;
 
@@ -404,14 +402,14 @@ public class Main extends JavaPlugin {
 								if (getConfig().contains("Start")) {
 									setStart(player, true);
 								} else {
-									player.sendMessage(starter("§cTu dois créer le start avant de pouvoir set!"));
-									player.sendMessage(starter("§c/jump create start"));
+									player.sendMessage(starter("Â§cTu dois crÃ©er le start avant de pouvoir set!"));
+									player.sendMessage(starter("Â§c/jump create start"));
 								}
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+									player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
-									player.sendMessage(starter("§cTrop d'arguments!"));
+									player.sendMessage(starter("Â§cTrop d'arguments!"));
 								}
 							}
 							return true;
@@ -420,14 +418,14 @@ public class Main extends JavaPlugin {
 								if (getConfig().contains("Lobby")) {
 									setLobby(player, true);
 								} else {
-									player.sendMessage(starter("§cTu dois créer le lobby avant de pouvoir set!"));
-									player.sendMessage(starter("§c/jump create lobby"));
+									player.sendMessage(starter("Â§cTu dois crÃ©er le lobby avant de pouvoir set!"));
+									player.sendMessage(starter("Â§c/jump create lobby"));
 								}
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+									player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
-									player.sendMessage(starter("§cTrop d'arguments!"));
+									player.sendMessage(starter("Â§cTrop d'arguments!"));
 								}
 							}
 							return true;
@@ -436,14 +434,14 @@ public class Main extends JavaPlugin {
 								if (getConfig().contains("Finish")) {
 									setFinish(player, true);
 								} else {
-									player.sendMessage(starter("§cTu dois créer le finish avant de pouvoir set!"));
-									player.sendMessage(starter("§c/jump create finish"));
+									player.sendMessage(starter("Â§cTu dois crÃ©er le finish avant de pouvoir set!"));
+									player.sendMessage(starter("Â§c/jump create finish"));
 								}
 							} else {
 								if (!player.isOp()) {
-									player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+									player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 								} else {
-									player.sendMessage(starter("§cTrop d'arguments!"));
+									player.sendMessage(starter("Â§cTrop d'arguments!"));
 								}
 							}
 						} else {
@@ -460,27 +458,27 @@ public class Main extends JavaPlugin {
 							if (args[1].equalsIgnoreCase("start")) {
 								if (getConfig().contains("Start")) {
 									player.teleport(getStartLoc());
-									player.sendMessage(starter("§aTu viens d'être téléporté au start!"));
+									player.sendMessage(starter("Â§aTu viens d'Ãªtre tÃ©lÃ©portÃ© au start!"));
 								} else {
-									player.sendMessage(starter("§cTu n'as pas crée le start !"));
+									player.sendMessage(starter("Â§cTu n'as pas crÃ©e le start !"));
 								}
 								return true;
 							}
 							if (args[1].equalsIgnoreCase("lobby")) {
 								if (getConfig().contains("Lobby")) {
 									player.teleport(getLobbyLoc());
-									player.sendMessage(starter("§aTu viens d'être téléporté au lobby!"));
+									player.sendMessage(starter("Â§aTu viens d'Ãªtre tÃ©lÃ©portÃ© au lobby!"));
 								} else {
-									player.sendMessage(starter("§cTu n'as pas crée le lobby !"));
+									player.sendMessage(starter("Â§cTu n'as pas crÃ©e le lobby !"));
 								}
 								return true;
 							}
 							if (args[1].equalsIgnoreCase("finish")) {
 								if (getConfig().contains("Finish")) {
 									player.teleport(getFinishLoc());
-									player.sendMessage(starter("§aTu viens d'être téléporté au finish!"));
+									player.sendMessage(starter("Â§aTu viens d'Ãªtre tÃ©lÃ©portÃ© au finish!"));
 								} else {
-									player.sendMessage(starter("§cTu n'as pas crée le finish !"));
+									player.sendMessage(starter("Â§cTu n'as pas crÃ©e le finish !"));
 								}
 								return true;
 							}
@@ -488,25 +486,25 @@ public class Main extends JavaPlugin {
 								String s = args[1];
 								u = Integer.parseInt(s);
 							} catch (NumberFormatException e) {
-								player.sendMessage(starter("§cCe n'est pas une id!"));
+								player.sendMessage(starter("Â§cCe n'est pas une id!"));
 								return true;
 							}
 							if (getConfig().contains("Checkpoint." + u)) {
 								player.teleport(getCheckPointLocById(u, player,
 										false));
 							} else {
-								player.sendMessage(starter("§cL'id n'est pas enregistrée!"));
+								player.sendMessage(starter("Â§cL'id n'est pas enregistrÃ©e!"));
 							}
 						}
 						if (args.length == 1) {
-							player.sendMessage(starter("§cIl manque des args:"));
-							player.sendMessage(starter("§c/jump tp <id>"));
-							player.sendMessage(starter("§c/jump tp start"));
-							player.sendMessage(starter("§c/jump tp finish"));
-							player.sendMessage(starter("§c/jump tp lobby"));
+							player.sendMessage(starter("Â§cIl manque des args:"));
+							player.sendMessage(starter("Â§c/jump tp <id>"));
+							player.sendMessage(starter("Â§c/jump tp start"));
+							player.sendMessage(starter("Â§c/jump tp finish"));
+							player.sendMessage(starter("Â§c/jump tp lobby"));
 						}
 						if (args.length > 2) {
-							player.sendMessage(starter("§cTrop d'arguments!"));
+							player.sendMessage(starter("Â§cTrop d'arguments!"));
 						}
 						return true;
 					}
@@ -515,7 +513,7 @@ public class Main extends JavaPlugin {
 					return true;
 					// } else {
 					// if (!player.isOp()) {
-					// player.sendMessage("§cTu n'es pas op!");
+					// player.sendMessage("Â§cTu n'es pas op!");
 					// } else {
 					// sendHelp(player);
 					// }
@@ -524,7 +522,7 @@ public class Main extends JavaPlugin {
 				return true;
 			}
 		} else {
-			player.sendMessage(starter("§6Plugin par pauldu671 (@SchawnnDev)"));
+			player.sendMessage(starter("Â§6Plugin par pauldu671 (@SchawnnDev)"));
 		}
 		return false;
 	}
@@ -546,7 +544,7 @@ public class Main extends JavaPlugin {
 		world = getConfig().getString("Checkpoint." + id + ".world");
 		World w = Bukkit.getWorld(world);
 		if (!isList) {
-			player.sendMessage(starter("§aTu viens d'être téléporté au checkpoint <"
+			player.sendMessage(starter("Â§aTu viens d'Ãªtre tÃ©lÃ©portÃ© au checkpoint <"
 					+ id + "> !"));
 		}
 		return new Location(w, x, y, z, yaw, pitch);
@@ -643,7 +641,6 @@ public class Main extends JavaPlugin {
 		Checkpoints = getConfig().getInt("Checkpoints");
 	}
 
-	@SuppressWarnings("unused")
 	private boolean checkpointExists(int id) {
 		Checkpoints = getConfig().getInt("Checkpoints");
 		if (getConfig().contains("Checkpoint." + id))
@@ -652,6 +649,6 @@ public class Main extends JavaPlugin {
 	}
 
 	public String starter(String msg) {
-		return "§7[" + "§cJump" + "§7] §6" + msg;
+		return "Â§7[" + "Â§cJump" + "Â§7] Â§6" + msg;
 	}
 }
